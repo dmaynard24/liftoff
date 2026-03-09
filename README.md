@@ -16,7 +16,7 @@ The repository includes a systematic approach for extracting design tokens, comp
 
 ### Quick Start
 
-Using any AI coding assistant, ask it to create a new idea like so:
+Using any AI coding assistant (recommend Claude Code with Opus 4.6 or greater), ask it to create a new idea:
 ```
 Create a new idea using https://lunatemplate.framer.website/
 ```
