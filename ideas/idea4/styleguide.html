@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anker Template — Design System Styleguide</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Instrument+Serif:ital@1&family=PT+Mono&display=swap" rel="stylesheet">
+
+<style>
+/* Erode font from Framer CDN */
+@font-face { font-family: "Erode"; src: url("https://framerusercontent.com/third-party-assets/fontshare/wf/L3KUL2HSHIWQ5KJC2X2XEI4K2CVI23EN/BG3KS4N3WIOZY5QD635C3DVWM7NWSE3Q/RPYYUUA6FJVWJIL3CQP3LGB33YXVOOUV.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 400; }
+@font-face { font-family: "Erode"; src: url("https://framerusercontent.com/third-party-assets/fontshare/wf/L3KUL2HSHIWQ5KJC2X2XEI4K2CVI23EN/BG3KS4N3WIOZY5QD635C3DVWM7NWSE3Q/RPYYUUA6FJVWJIL3CQP3LGB33YXVOOUV.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 500; }
+@font-face { font-family: "Erode"; src: url("https://framerusercontent.com/third-party-assets/fontshare/wf/W4KADQUTXSBS5JFKL5R6O3OD5Y2HUMPK/FUANNLITZ24BKB6NQZP3QPJP2PCYZG4I/4MK6ECKUA53PDOTLFHJC57TECDKREBGM.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 700; }
+@font-face { font-family: "Erode"; src: url("https://framerusercontent.com/third-party-assets/fontshare/wf/Y23VEM6ZOYETVMDDX4WE6O26D6KD6FTH/5JK76ETARZBNJPAIPNJTGEYIT5MTFYRW/RDMTNE7APFYTJ64ZAAHBINZMSOKWCXKF.woff2") format("woff2"); font-display: swap; font-style: italic; font-weight: 400; }
+
+/* ========== CSS Custom Properties ========== */
+:root {
+  /* Colors - Core */
+  --color-bg: #121212;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-surface: #2b2b2b;
+  --color-bg-overlay: #333;
+
+  /* Colors - Text */
+  --color-text-primary: #fff;
+  --color-text-secondary: #e0e0e0;
+  --color-text-muted: #c2c2c2;
+  --color-text-dimmed: #7a7a7a;
+  --color-text-subtle: #5c5c5c;
+
+  /* Colors - Border */
+  --color-border-default: rgba(255,255,255,0.1);
+  --color-border-hover: rgba(255,255,255,0.15);
+  --color-border-strong: rgba(255,255,255,0.25);
+
+  /* Colors - Accent */
+  --color-accent-purple: #8e84f7;
+  --color-accent-purple-dark: #7d3bf4;
+  --color-accent-purple-glow: rgba(141,131,247,0.3);
+  --color-accent-purple-shadow: rgba(124,59,245,0.33);
+
+  /* Colors - Decorative */
+  --color-yellow: #fed45c;
+  --color-pink: #fbc2d5;
+  --color-teal: #c4e3e6;
+  --color-green: #2eff70;
+  --color-magenta: #ff00bf;
+
+  /* Typography - Families */
+  --font-serif: "Erode", serif;
+  --font-sans: "Geist", sans-serif;
+  --font-mono: "PT Mono", monospace;
+  --font-accent: "Instrument Serif", serif;
+
+  /* Typography - Scale (rem multipliers) */
+  --fs-label: 0.81rem;
+  --fs-nav: 15px;
+  --fs-body: 1rem;
+  --fs-h5: 1rem;
+  --fs-h4-sm: 1.2rem;
+  --fs-h4: 1.5rem;
+  --fs-h3-sm: 2rem;
+  --fs-h3: 2.25rem;
+  --fs-h2-sm: 2.4rem;
+  --fs-h2: 3.25rem;
+  --fs-display-sm: 3.04rem;
+  --fs-display-md: 3.8rem;
+  --fs-display: 4.75rem;
+  --fs-stat-md: 5.12rem;
+  --fs-stat-lg: 6.4rem;
+  --fs-stat-hero: 7rem;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 20px;
+  --space-8: 24px;
+  --space-9: 32px;
+  --space-10: 48px;
+  --space-11: 80px;
+  --space-12: 120px;
+  --space-13: 180px;
+
+  /* Border Radius */
+  --radius-none: 0px;
+  --radius-sm: 3px;
+  --radius-md: 20px;
+  --radius-full: 50px;
+  --radius-circle: 50%;
+
+  /* Shadows */
+  --shadow-card: 0px 0.6px 0.6px -1.25px rgba(0,0,0,0.19), 0px 2.29px 2.29px -2.5px rgba(0,0,0,0.17), 0px 10px 10px -3.75px rgba(0,0,0,0.07);
+  --shadow-elevated: 0px 0.6px 1.57px -1.5px rgba(0,0,0,0.17), 0px 2.29px 5.95px -3px rgba(0,0,0,0.14), 0px 10px 26px -4.5px rgba(0,0,0,0.02);
+
+  /* Layout */
+  --max-width: 1800px;
+  --content-width: 1600px;
+  --narrow-width: 800px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.12, 0.23, 0.13, 0.96);
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== Layout ========== */
+.styleguide {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--color-bg-elevated);
+  border-right: 1px solid var(--color-border-default);
+  padding: 32px 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid var(--color-border-default);
+  margin-bottom: 16px;
+}
+
+.sidebar-logo h2 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.sidebar-logo span {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--color-accent-purple);
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+.sidebar nav > ul > li > a {
+  display: block;
+  padding: 8px 24px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  transition: color var(--duration-fast);
+}
+
+.sidebar nav > ul > li > a:hover,
+.sidebar nav > ul > li > a.active {
+  color: var(--color-text-primary);
+}
+
+.sidebar nav > ul > li > a.active {
+  border-right: 2px solid var(--color-accent-purple);
+}
+
+.sidebar nav ul ul {
+  margin-bottom: 8px;
+}
+
+.sidebar nav ul ul a {
+  display: block;
+  padding: 5px 24px 5px 36px;
+  color: var(--color-text-dimmed);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color var(--duration-fast);
+}
+
+.sidebar nav ul ul a:hover,
+.sidebar nav ul ul a.active {
+  color: var(--color-text-secondary);
+}
+
+/* Main content */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  padding: 48px;
+  max-width: calc(100vw - 260px);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 120px;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2-sm);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.section-desc {
+  color: var(--color-text-secondary);
+  font-size: var(--fs-body);
+  max-width: 600px;
+  margin-bottom: 48px;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+}
+
+.subsection {
+  margin-bottom: 80px;
+}
+
+.subsection-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+/* ========== Specimen containers ========== */
+.specimen-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.specimen-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.specimen-card {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: border-color var(--duration-normal);
+}
+
+.specimen-card:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* ========== FOUNDATIONS: Colors ========== */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.color-swatch {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+}
+
+.color-swatch-preview {
+  height: 80px;
+  width: 100%;
+}
+
+.color-swatch-info {
+  padding: 12px 16px;
+}
+
+.color-swatch-name {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.color-swatch-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-dimmed);
+}
+
+/* ========== FOUNDATIONS: Typography ========== */
+.type-specimen {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+}
+
+.type-specimen-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.type-specimen-meta span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-dimmed);
+  background: var(--color-bg-surface);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* ========== FOUNDATIONS: Spacing ========== */
+.spacing-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.spacing-bar {
+  height: 24px;
+  background: var(--color-accent-purple);
+  border-radius: var(--radius-sm);
+  opacity: 0.6;
+}
+
+.spacing-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  min-width: 100px;
+}
+
+/* ========== FOUNDATIONS: Radius ========== */
+.radius-grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.radius-sample {
+  width: 80px;
+  height: 80px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radius-sample-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-dimmed);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ========== FOUNDATIONS: Shadows ========== */
+.shadow-grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.shadow-sample {
+  width: 180px;
+  height: 120px;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-dimmed);
+}
+
+/* ========== ATOMS: Buttons ========== */
+.button-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Ghost / Nav button (from source: background rgba(255,255,255,0.15), border-radius 50px) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  border: none;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ghost {
+  background: rgba(255,255,255,0.15);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-full);
+  padding: 10px 20px;
+  font-size: var(--fs-nav);
+  line-height: 1.4;
+}
+
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.btn-accent {
+  background: var(--color-accent-purple-shadow);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-full);
+  padding: 10px 20px;
+  font-size: var(--fs-nav);
+  line-height: 1.4;
+}
+
+.btn-accent:hover {
+  background: var(--color-accent-purple-glow);
+}
+
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-lg { padding: 14px 28px; font-size: 17px; }
+
+.btn-icon-right svg { width: 14px; height: 14px; }
+.btn-icon-only { padding: 10px; }
+
+.btn:disabled, .btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Arrow icon inline SVG for buttons */
+.btn-arrow {
+  display: inline-flex;
+  width: 14px;
+  height: 15px;
+}
+
+/* ========== ATOMS: Tags/Badges ========== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+
+.tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent-purple);
+  flex-shrink: 0;
+}
+
+.tag-dot--green { background: var(--color-green); }
+.tag-dot--yellow { background: var(--color-yellow); }
+.tag-dot--pink { background: var(--color-pink); }
+.tag-dot--teal { background: var(--color-teal); }
+
+/* ========== ATOMS: Status Indicators ========== */
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.status-dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--active::before { background: var(--color-green); }
+.status-dot--warning::before { background: var(--color-yellow); }
+.status-dot--error::before { background: var(--color-magenta); }
+
+/* ========== ATOMS: Form Inputs ========== */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 400px;
+}
+
+.input-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  letter-spacing: -0.02em;
+}
+
+.input-field {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color var(--duration-fast);
+  letter-spacing: -0.04em;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.input-field:focus {
+  border-color: var(--color-accent-purple);
+}
+
+.input-field--error {
+  border-color: var(--color-magenta);
+}
+
+.input-field:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.input-hint {
+  font-size: 13px;
+  color: var(--color-text-dimmed);
+}
+
+.input-error {
+  font-size: 13px;
+  color: var(--color-magenta);
+}
+
+textarea.input-field {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ========== ATOMS: Dividers ========== */
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--color-border-default);
+  margin: 24px 0;
+}
+
+/* ========== MOLECULES: Portfolio Card ========== */
+/* From source: dark bg card, image top, text bottom, corner decorations, "Learn More" link */
+.portfolio-card {
+  position: relative;
+  background: var(--color-bg-elevated);
+  border-radius: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.portfolio-card:hover {
+  transform: translateY(-4px);
+}
+
+.portfolio-card-image {
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: var(--color-bg-surface);
+  overflow: hidden;
+  position: relative;
+}
+
+.portfolio-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.portfolio-card:hover .portfolio-card-image img {
+  transform: scale(1.03);
+}
+
+/* Corners - from SVG in source (L-shaped corner markers at each corner) */
+.portfolio-card-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.portfolio-card-corner {
+  position: absolute;
+  width: 13px;
+  height: 12px;
+}
+
+.portfolio-card-corner--tl { top: 10px; left: 10px; }
+.portfolio-card-corner--tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.portfolio-card-corner--bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.portfolio-card-corner--br { bottom: 10px; right: 10px; transform: scale(-1); }
+
+.portfolio-card-corner svg {
+  width: 100%;
+  height: 100%;
+}
+
+.portfolio-card-body {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.portfolio-card-name {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h5);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.portfolio-card-year {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.portfolio-card-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+  white-space: nowrap;
+}
+
+.portfolio-card-link:hover {
+  color: var(--color-text-primary);
+}
+
+/* ========== MOLECULES: Stat Card ========== */
+/* From source: large number + label, horizontally scrolling marquee row */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 32px 48px;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-sans);
+  font-size: var(--fs-stat-hero);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+  color: var(--color-text-primary);
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* ========== MOLECULES: Value Card ========== */
+/* From source: numbered items (01-04), title + description */
+.value-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: 0;
+}
+
+.value-card-number {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  color: var(--color-accent-purple);
+}
+
+.value-card-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+}
+
+.value-card-desc {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+}
+
+/* ========== MOLECULES: Vertical Card (Investment Verticals) ========== */
+/* From source: icon-based card with category name + description, dark bg */
+.vertical-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: 0;
+  transition: border-color var(--duration-normal);
+}
+
+.vertical-card:hover {
+  border-color: var(--color-border-hover);
+}
+
+.vertical-card-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-circle);
+  background: rgba(255,255,255,0.1);
+}
+
+.vertical-card-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--color-text-primary);
+  stroke-width: 1.5;
+}
+
+.vertical-card-title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3-sm);
+  font-weight: 400;
+  letter-spacing: -0.08em;
+  line-height: 1.15;
+}
+
+.vertical-card-desc {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+}
+
+/* ========== MOLECULES: News Card ========== */
+/* From source: image + category tag + date + title, dark bg */
+.news-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.news-card:hover {
+  transform: translateY(-4px);
+}
+
+.news-card-image {
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: var(--color-bg-surface);
+  overflow: hidden;
+}
+
+.news-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.news-card:hover .news-card-image img {
+  transform: scale(1.03);
+}
+
+.news-card-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.news-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.news-card-tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-accent-purple);
+  text-transform: uppercase;
+}
+
+.news-card-date {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-dimmed);
+}
+
+.news-card-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4-sm);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+}
+
+/* ========== ORGANISMS: Header ========== */
+/* From source: fixed top, backdrop-filter blur(10px), bg rgba(3,3,3,0.2), full width */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(3, 3, 3, 0.2);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 16px 48px;
+}
+
+.site-header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--color-text-primary);
+}
+
+.site-header-logo-text {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.site-header-logo-text sup {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--color-accent-purple);
+  font-size: 0.6em;
+  vertical-align: super;
+}
+
+.site-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.site-header-nav a {
+  font-size: var(--fs-nav);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  letter-spacing: -0.04em;
+  line-height: 1.4;
+  transition: opacity var(--duration-fast);
+}
+
+.site-header-nav a:hover {
+  opacity: 0.7;
+}
+
+/* ========== ORGANISMS: Footer ========== */
+/* From source: 3-column link grid (Main, Support, Social) + bottom bar */
+.site-footer {
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border-default);
+  padding: 48px;
+}
+
+.site-footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--color-border-default);
+  flex-wrap: wrap;
+}
+
+.site-footer-logo {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  margin-bottom: 16px;
+}
+
+.site-footer-logo sup {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--color-accent-purple);
+  font-size: 0.6em;
+}
+
+.site-footer-columns {
+  display: flex;
+  gap: 80px;
+  flex-wrap: wrap;
+}
+
+.site-footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.site-footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.site-footer-col a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color var(--duration-fast);
+}
+
+.site-footer-col a:hover {
+  color: var(--color-text-primary);
+}
+
+.site-footer-bottom {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.site-footer-address,
+.site-footer-copy {
+  font-size: 13px;
+  color: var(--color-text-dimmed);
+}
+
+.site-footer-credit {
+  font-size: 13px;
+  color: var(--color-text-dimmed);
+}
+
+.site-footer-credit a {
+  color: var(--color-accent-purple);
+  text-decoration: none;
+}
+
+/* ========== ORGANISMS: CTA Section ========== */
+/* From source: centered text "Let's Shape the Future Together" + Contact button */
+.cta-section {
+  text-align: center;
+  padding: 120px 48px;
+  border-top: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.cta-section-title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+  margin-bottom: 32px;
+}
+
+/* ========== ORGANISMS: Hero Section ========== */
+.hero-section {
+  position: relative;
+  padding: 120px 48px 80px;
+  text-align: center;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-display);
+  font-weight: 400;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
+  margin-bottom: 24px;
+}
+
+.hero-title em {
+  font-family: var(--font-accent);
+  font-style: italic;
+}
+
+.hero-desc {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+
+/* ========== ORGANISMS: Stats Marquee ========== */
+.stats-marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.stats-marquee-track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.stats-marquee-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 32px 48px;
+  border-right: 1px solid var(--color-border-default);
+  flex-shrink: 0;
+}
+
+.stats-marquee-value {
+  font-family: var(--font-sans);
+  font-size: var(--fs-stat-hero);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+}
+
+.stats-marquee-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* ========== ANIMATIONS SECTION ========== */
+.animation-demo {
+  margin-bottom: 32px;
+}
+
+.animation-demo-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.fade-up-demo {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.fade-up-item {
+  width: 120px;
+  height: 80px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-dimmed);
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.fade-up-item.animate {
+  animation: fadeUp 0.7s var(--ease-out) forwards;
+}
+
+.fade-up-item:nth-child(2).animate { animation-delay: 0.1s; }
+.fade-up-item:nth-child(3).animate { animation-delay: 0.2s; }
+.fade-up-item:nth-child(4).animate { animation-delay: 0.3s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.replay-btn {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--color-accent-purple);
+  background: none;
+  border: 1px solid var(--color-accent-purple);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 16px;
+  transition: background var(--duration-fast);
+}
+
+.replay-btn:hover {
+  background: var(--color-accent-purple-glow);
+}
+
+/* ========== Scroll-spy highlight via IntersectionObserver (JS below) ========== */
+/* Fade-in on scroll */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { opacity: 1; transform: none; transition: none; }
+  .fade-up-item { opacity: 1; transform: none; animation: none !important; }
+  .stats-marquee-track { animation: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="styleguide">
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="https://anker-template.framer.website/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">
+        <h2>Anker<span>*</span></h2>
+        <p style="font-size:12px;color:var(--color-text-dimmed);margin-top:4px;">Design System <span style="font-size:10px;opacity:0.6;">↗ source</span></p>
+      </a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#foundations">Foundations</a>
+          <ul>
+            <li><a href="#colors">Colors</a></li>
+            <li><a href="#typography">Typography</a></li>
+            <li><a href="#spacing">Spacing</a></li>
+            <li><a href="#radius">Border Radius</a></li>
+            <li><a href="#shadows">Shadows</a></li>
+          </ul>
+        </li>
+        <li><a href="#atoms">Atoms</a>
+          <ul>
+            <li><a href="#buttons">Buttons</a></li>
+            <li><a href="#tags">Tags & Badges</a></li>
+            <li><a href="#status">Status Indicators</a></li>
+            <li><a href="#inputs">Form Inputs</a></li>
+            <li><a href="#dividers">Dividers</a></li>
+          </ul>
+        </li>
+        <li><a href="#molecules">Molecules</a>
+          <ul>
+            <li><a href="#portfolio-cards">Portfolio Cards</a></li>
+            <li><a href="#stat-cards">Stat Cards</a></li>
+            <li><a href="#value-cards">Value Cards</a></li>
+            <li><a href="#vertical-cards">Vertical Cards</a></li>
+            <li><a href="#news-cards">News Cards</a></li>
+          </ul>
+        </li>
+        <li><a href="#organisms">Organisms</a>
+          <ul>
+            <li><a href="#header">Header</a></li>
+            <li><a href="#hero">Hero Section</a></li>
+            <li><a href="#stats-marquee">Stats Marquee</a></li>
+            <li><a href="#cta">CTA Section</a></li>
+            <li><a href="#footer">Footer</a></li>
+            <li><a href="#animations">Animations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main">
+
+    <!-- ==================== FOUNDATIONS ==================== -->
+    <section id="foundations" class="section fade-up">
+      <p class="section-label">Foundations</p>
+      <h1 class="section-title">Design Tokens</h1>
+      <p class="section-desc">The core visual language extracted from the Anker Venture Capital Framer template. All values map directly to CSS custom properties.</p>
+
+      <!-- Colors -->
+      <div id="colors" class="subsection fade-up">
+        <h3 class="subsection-title">Colors</h3>
+
+        <p class="section-label" style="margin-bottom:16px">Core</p>
+        <div class="color-grid" style="margin-bottom:32px">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#121212"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Background</div>
+              <div class="color-swatch-value">--color-bg · #121212</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#1a1a1a"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Elevated</div>
+              <div class="color-swatch-value">--color-bg-elevated · #1a1a1a</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#2b2b2b"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Surface</div>
+              <div class="color-swatch-value">--color-bg-surface · #2b2b2b</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#333"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Overlay</div>
+              <div class="color-swatch-value">--color-bg-overlay · #333</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px">Text</p>
+        <div class="color-grid" style="margin-bottom:32px">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#fff"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Primary</div>
+              <div class="color-swatch-value">--color-text-primary · #fff</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#e0e0e0"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Secondary</div>
+              <div class="color-swatch-value">--color-text-secondary · #e0e0e0</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#c2c2c2"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Muted</div>
+              <div class="color-swatch-value">--color-text-muted · #c2c2c2</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#7a7a7a"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Dimmed</div>
+              <div class="color-swatch-value">--color-text-dimmed · #7a7a7a</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#5c5c5c"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Subtle</div>
+              <div class="color-swatch-value">--color-text-subtle · #5c5c5c</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px">Accent</p>
+        <div class="color-grid" style="margin-bottom:32px">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#8e84f7"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Purple</div>
+              <div class="color-swatch-value">--color-accent-purple · #8e84f7</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#7d3bf4"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Purple Dark</div>
+              <div class="color-swatch-value">--color-accent-purple-dark · #7d3bf4</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(141,131,247,0.3)"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Purple Glow</div>
+              <div class="color-swatch-value">--color-accent-purple-glow</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px">Decorative</p>
+        <div class="color-grid" style="margin-bottom:32px">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#fed45c"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Yellow</div>
+              <div class="color-swatch-value">--color-yellow · #fed45c</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#fbc2d5"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Pink</div>
+              <div class="color-swatch-value">--color-pink · #fbc2d5</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#c4e3e6"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Teal</div>
+              <div class="color-swatch-value">--color-teal · #c4e3e6</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#2eff70"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Green</div>
+              <div class="color-swatch-value">--color-green · #2eff70</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#ff00bf"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Magenta</div>
+              <div class="color-swatch-value">--color-magenta · #ff00bf</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px">Borders & Opacity</p>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Border Default</div>
+              <div class="color-swatch-value">rgba(255,255,255,0.1)</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.15)"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Border Hover</div>
+              <div class="color-swatch-value">rgba(255,255,255,0.15)</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.25)"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Border Strong</div>
+              <div class="color-swatch-value">rgba(255,255,255,0.25)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div id="typography" class="subsection fade-up">
+        <h3 class="subsection-title">Typography</h3>
+
+        <p class="section-label" style="margin-bottom:16px">Font Families</p>
+
+        <div class="type-specimen">
+          <p style="font-family:var(--font-serif);font-size:2rem;letter-spacing:-0.05em;line-height:1.1;">Erode — The quick brown fox jumps over the lazy dog</p>
+          <p style="font-family:var(--font-serif);font-size:1rem;color:var(--color-text-secondary);margin-top:8px;">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p>
+          <div class="type-specimen-meta">
+            <span>Erode, serif</span>
+            <span>Headings</span>
+            <span>400, 500, 700</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <p style="font-family:var(--font-sans);font-size:2rem;letter-spacing:-0.04em;line-height:1.1;">Geist — The quick brown fox jumps over the lazy dog</p>
+          <p style="font-family:var(--font-sans);font-size:1rem;color:var(--color-text-secondary);margin-top:8px;">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p>
+          <div class="type-specimen-meta">
+            <span>Geist, sans-serif</span>
+            <span>Body</span>
+            <span>400, 500, 700</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <p style="font-family:var(--font-mono);font-size:1.2rem;letter-spacing:-0.02em;line-height:1.2;">PT Mono — The quick brown fox jumps over the lazy dog</p>
+          <p style="font-family:var(--font-mono);font-size:1rem;color:var(--color-text-secondary);margin-top:8px;">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p>
+          <div class="type-specimen-meta">
+            <span>PT Mono, monospace</span>
+            <span>Labels / Uppercase</span>
+            <span>400</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <p style="font-family:var(--font-accent);font-style:italic;font-size:2rem;letter-spacing:-0.02em;line-height:1.1;">Instrument Serif — The quick brown fox jumps</p>
+          <p style="font-family:var(--font-accent);font-style:italic;font-size:1rem;color:var(--color-text-secondary);margin-top:8px;">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</p>
+          <div class="type-specimen-meta">
+            <span>Instrument Serif, serif</span>
+            <span>Accent / Italic</span>
+            <span>400 italic</span>
+          </div>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px;margin-top:48px">Type Scale</p>
+
+        <div class="type-specimen">
+          <p style="font-family:var(--font-sans);font-size:var(--fs-stat-hero);letter-spacing:-0.04em;line-height:0.8;">5B</p>
+          <div class="type-specimen-meta"><span>stat-hero</span><span>7rem</span><span>Geist 400</span><span>-0.04em</span><span>0.8 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-serif);font-size:var(--fs-display);letter-spacing:-0.08em;line-height:0.9;">Fueling <em style="font-family:var(--font-accent);font-style:italic;">Startups</em></p>
+          <div class="type-specimen-meta"><span>display</span><span>4.75rem</span><span>Erode 400</span><span>-0.08em</span><span>0.9 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-serif);font-size:var(--fs-h2);letter-spacing:-0.05em;line-height:1.05;">Let's Shape the Future Together.</p>
+          <div class="type-specimen-meta"><span>h2</span><span>3.25rem</span><span>Erode 400</span><span>-0.05em</span><span>1.05 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-serif);font-size:var(--fs-h3);letter-spacing:-0.08em;line-height:1.15;">Investment Verticals</p>
+          <div class="type-specimen-meta"><span>h3</span><span>2.25rem</span><span>Erode 400</span><span>-0.08em</span><span>1.15 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-sans);font-size:var(--fs-h4);letter-spacing:-0.05em;line-height:1.2;">Innovation</p>
+          <div class="type-specimen-meta"><span>h4</span><span>1.5rem</span><span>Geist 400</span><span>-0.05em</span><span>1.2 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-sans);font-size:var(--fs-h5);font-weight:500;letter-spacing:-0.04em;line-height:1.1;">Finaura</p>
+          <div class="type-specimen-meta"><span>h5</span><span>1rem</span><span>Geist 500</span><span>-0.04em</span><span>1.1 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-sans);font-size:var(--fs-body);letter-spacing:-0.04em;line-height:1.3;color:var(--color-text-secondary);">We invest in people, ideas, and companies with the potential to change the world.</p>
+          <div class="type-specimen-meta"><span>body</span><span>1rem</span><span>Geist 400</span><span>-0.04em</span><span>1.3 lh</span></div>
+        </div>
+        <div class="type-specimen">
+          <p style="font-family:var(--font-mono);font-size:var(--fs-label);letter-spacing:-0.02em;line-height:1.2;text-transform:uppercase;color:var(--color-text-muted);">Venture Capital Fund</p>
+          <div class="type-specimen-meta"><span>label</span><span>0.81rem</span><span>PT Mono 400</span><span>-0.02em</span><span>uppercase</span></div>
+        </div>
+      </div>
+
+      <!-- Spacing -->
+      <div id="spacing" class="subsection fade-up">
+        <h3 class="subsection-title">Spacing Scale</h3>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-1 · 4px</span><div class="spacing-bar" style="width:4px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-2 · 6px</span><div class="spacing-bar" style="width:6px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-3 · 8px</span><div class="spacing-bar" style="width:8px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-4 · 10px</span><div class="spacing-bar" style="width:10px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-5 · 12px</span><div class="spacing-bar" style="width:12px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-6 · 16px</span><div class="spacing-bar" style="width:16px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-7 · 20px</span><div class="spacing-bar" style="width:20px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-8 · 24px</span><div class="spacing-bar" style="width:24px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-9 · 32px</span><div class="spacing-bar" style="width:32px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-10 · 48px</span><div class="spacing-bar" style="width:48px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-11 · 80px</span><div class="spacing-bar" style="width:80px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-12 · 120px</span><div class="spacing-bar" style="width:120px"></div></div>
+        <div class="spacing-bar-wrap"><span class="spacing-label">--space-13 · 180px</span><div class="spacing-bar" style="width:180px"></div></div>
+      </div>
+
+      <!-- Border Radius -->
+      <div id="radius" class="subsection fade-up">
+        <h3 class="subsection-title">Border Radius</h3>
+        <div class="radius-grid">
+          <div>
+            <div class="radius-sample" style="border-radius:0px"></div>
+            <p class="radius-sample-label">none · 0px</p>
+          </div>
+          <div>
+            <div class="radius-sample" style="border-radius:3px"></div>
+            <p class="radius-sample-label">sm · 3px</p>
+          </div>
+          <div>
+            <div class="radius-sample" style="border-radius:20px"></div>
+            <p class="radius-sample-label">md · 20px</p>
+          </div>
+          <div>
+            <div class="radius-sample" style="border-radius:50px"></div>
+            <p class="radius-sample-label">full · 50px</p>
+          </div>
+          <div>
+            <div class="radius-sample" style="border-radius:50%"></div>
+            <p class="radius-sample-label">circle · 50%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shadows -->
+      <div id="shadows" class="subsection fade-up">
+        <h3 class="subsection-title">Shadows & Effects</h3>
+        <div class="shadow-grid">
+          <div>
+            <div class="shadow-sample" style="box-shadow:var(--shadow-card)">Card</div>
+            <p class="radius-sample-label" style="margin-top:8px">--shadow-card</p>
+          </div>
+          <div>
+            <div class="shadow-sample" style="box-shadow:var(--shadow-elevated)">Elevated</div>
+            <p class="radius-sample-label" style="margin-top:8px">--shadow-elevated</p>
+          </div>
+          <div>
+            <div class="shadow-sample" style="box-shadow:inset 0px 0px 0px 1px rgb(0,0,0)">Inset Border</div>
+            <p class="radius-sample-label" style="margin-top:8px">inset 1px</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ATOMS ==================== -->
+    <section id="atoms" class="section fade-up">
+      <p class="section-label">Atoms</p>
+      <h1 class="section-title">Components</h1>
+      <p class="section-desc">Individual UI elements — the smallest building blocks of the design system.</p>
+
+      <!-- Buttons -->
+      <div id="buttons" class="subsection fade-up">
+        <h3 class="subsection-title">Buttons</h3>
+
+        <p class="section-label" style="margin-bottom:16px">Ghost (from source: bg rgba(255,255,255,0.15), radius 50px)</p>
+        <div class="button-row">
+          <button class="btn btn-ghost btn-sm">Small</button>
+          <button class="btn btn-ghost">Contact</button>
+          <button class="btn btn-ghost btn-lg">Large</button>
+          <button class="btn btn-ghost" disabled>Disabled</button>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px">Accent (from source: bg rgba(124,59,245,0.33), radius 50px)</p>
+        <div class="button-row">
+          <button class="btn btn-accent btn-sm">Small</button>
+          <button class="btn btn-accent">Contact <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-accent btn-lg">Large <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-accent" disabled>Disabled</button>
+        </div>
+
+        <p class="section-label" style="margin-bottom:16px">With Arrow Icon (extracted from source SVG)</p>
+        <div class="button-row">
+          <button class="btn btn-ghost">Our Companies <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-ghost">View All <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-ghost">Meet Us <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Tags/Badges -->
+      <div id="tags" class="subsection fade-up">
+        <h3 class="subsection-title">Tags & Badges</h3>
+        <div class="button-row">
+          <span class="tag"><span class="tag-dot"></span>Insights</span>
+          <span class="tag"><span class="tag-dot tag-dot--green"></span>Guides</span>
+          <span class="tag"><span class="tag-dot tag-dot--yellow"></span>Trends</span>
+          <span class="tag"><span class="tag-dot tag-dot--pink"></span>Updates</span>
+          <span class="tag"><span class="tag-dot tag-dot--teal"></span>Research</span>
+        </div>
+      </div>
+
+      <!-- Status Indicators -->
+      <div id="status" class="subsection fade-up">
+        <h3 class="subsection-title">Status Indicators</h3>
+        <div class="button-row">
+          <span class="status-dot status-dot--active">Active</span>
+          <span class="status-dot status-dot--warning">Pending</span>
+          <span class="status-dot status-dot--error">Closed</span>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <div id="inputs" class="subsection fade-up">
+        <h3 class="subsection-title">Form Inputs</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:800px;">
+          <div class="input-group">
+            <label class="input-label">Name</label>
+            <input type="text" class="input-field" placeholder="Enter your name">
+            <span class="input-hint">Your full name</span>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Email</label>
+            <input type="email" class="input-field" placeholder="you@example.com">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Company (Error)</label>
+            <input type="text" class="input-field input-field--error" value="abc">
+            <span class="input-error">Company name is too short</span>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Website (Disabled)</label>
+            <input type="text" class="input-field" disabled placeholder="https://...">
+          </div>
+          <div class="input-group" style="grid-column:span 2">
+            <label class="input-label">Message</label>
+            <textarea class="input-field" placeholder="Tell us about your project..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dividers -->
+      <div id="dividers" class="subsection fade-up">
+        <h3 class="subsection-title">Dividers</h3>
+        <p style="color:var(--color-text-secondary);margin-bottom:16px;">1px solid rgba(255,255,255,0.1) — extracted from source border styles</p>
+        <hr class="divider">
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-top:8px">Default horizontal divider</p>
+      </div>
+    </section>
+
+    <!-- ==================== MOLECULES ==================== -->
+    <section id="molecules" class="section fade-up">
+      <p class="section-label">Molecules</p>
+      <h1 class="section-title">Composed Components</h1>
+      <p class="section-desc">Multi-element compositions extracted from the source DOM. Spacing, nesting, and alignment match the original Framer template exactly.</p>
+
+      <!-- Portfolio Cards -->
+      <div id="portfolio-cards" class="subsection fade-up">
+        <h3 class="subsection-title">Portfolio Cards</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: flex column, image top (aspect 16/10), body with name + year + "Learn More" link, L-shaped corner decorations via SVG</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:1200px;">
+          <div class="portfolio-card">
+            <div class="portfolio-card-image" style="background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+              <div class="portfolio-card-corners">
+                <div class="portfolio-card-corner portfolio-card-corner--tl"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--tr"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--bl"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--br"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+              </div>
+            </div>
+            <div class="portfolio-card-body">
+              <div>
+                <div class="portfolio-card-name">Finaura</div>
+                <div class="portfolio-card-year">2017</div>
+              </div>
+              <a href="#" class="portfolio-card-link">Learn More <svg width="14" height="15" viewBox="0 0 14 15" fill="none"><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+
+          <div class="portfolio-card">
+            <div class="portfolio-card-image" style="background:linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);">
+              <div class="portfolio-card-corners">
+                <div class="portfolio-card-corner portfolio-card-corner--tl"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--tr"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--bl"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--br"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+              </div>
+            </div>
+            <div class="portfolio-card-body">
+              <div>
+                <div class="portfolio-card-name">Aurora</div>
+                <div class="portfolio-card-year">2018</div>
+              </div>
+              <a href="#" class="portfolio-card-link">Learn More <svg width="14" height="15" viewBox="0 0 14 15" fill="none"><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+
+          <div class="portfolio-card">
+            <div class="portfolio-card-image" style="background:linear-gradient(135deg, #1a0a2e 0%, #2a1a4a 100%);">
+              <div class="portfolio-card-corners">
+                <div class="portfolio-card-corner portfolio-card-corner--tl"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--tr"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--bl"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+                <div class="portfolio-card-corner portfolio-card-corner--br"><svg viewBox="0 0 13 11"><path d="M 1 10.846 L 1 0.212 M 1.425 10.421 L 12.058 10.421" fill="transparent" stroke-width="0.849208" stroke="rgb(92,92,92)" stroke-miterlimit="10"/></svg></div>
+              </div>
+            </div>
+            <div class="portfolio-card-body">
+              <div>
+                <div class="portfolio-card-name">Luminary</div>
+                <div class="portfolio-card-year">2018</div>
+              </div>
+              <a href="#" class="portfolio-card-link">Learn More <svg width="14" height="15" viewBox="0 0 14 15" fill="none"><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div id="stat-cards" class="subsection fade-up">
+        <h3 class="subsection-title">Stat Cards</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: flex column, center aligned, stat-hero font size (7rem), PT Mono label uppercase, horizontally separated by 1px borders</p>
+        <div style="display:flex;border:1px solid var(--color-border-default);overflow:hidden;">
+          <div class="stat-card" style="border-right:1px solid var(--color-border-default);flex:1;">
+            <div class="stat-value">5B</div>
+            <div class="stat-label">Capital Invested</div>
+          </div>
+          <div class="stat-card" style="border-right:1px solid var(--color-border-default);flex:1;">
+            <div class="stat-value">20x</div>
+            <div class="stat-label">Average Return</div>
+          </div>
+          <div class="stat-card" style="border-right:1px solid var(--color-border-default);flex:1;">
+            <div class="stat-value">30</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-card" style="border-right:1px solid var(--color-border-default);flex:1;">
+            <div class="stat-value">1B</div>
+            <div class="stat-label">Realized Gains</div>
+          </div>
+          <div class="stat-card" style="flex:1;">
+            <div class="stat-value">80+</div>
+            <div class="stat-label">Employees</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Value Cards -->
+      <div id="value-cards" class="subsection fade-up">
+        <h3 class="subsection-title">Value Cards</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: numbered 01-04, title + description, bg elevated, 1px border, padding 32px, gap 16px</p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:1000px;">
+          <div class="value-card">
+            <div class="value-card-number">01</div>
+            <div class="value-card-title">Innovation</div>
+            <div class="value-card-desc">Embracing bold ideas and new solutions that transform industries, drive growth, and create new opportunities for people and businesses.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-card-number">02</div>
+            <div class="value-card-title">Sustainability</div>
+            <div class="value-card-desc">Supporting companies that prioritize environmental and social responsibility, driving a more sustainable future for generations to come.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-card-number">03</div>
+            <div class="value-card-title">Entrepreneurship</div>
+            <div class="value-card-desc">Fostering a spirit of entrepreneurship, providing resources, expertise, and guidance to help founders succeed, grow, and thrive.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-card-number">04</div>
+            <div class="value-card-title">Positive Impact</div>
+            <div class="value-card-desc">Creating lasting value for people and the planet, investing in companies that make a meaningful difference in the world.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical Cards -->
+      <div id="vertical-cards" class="subsection fade-up">
+        <h3 class="subsection-title">Investment Vertical Cards</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: icon circle (48px, bg rgba(255,255,255,0.1)), Erode serif title (h3-sm), Geist body description</p>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:1200px;">
+          <div class="vertical-card">
+            <div class="vertical-card-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="vertical-card-title">Crypto</div>
+            <div class="vertical-card-desc">Investing in blockchain and cryptocurrency companies shaping the future of decentralized finance.</div>
+          </div>
+          <div class="vertical-card">
+            <div class="vertical-card-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="vertical-card-title">Technology</div>
+            <div class="vertical-card-desc">Backing innovative tech companies driving advancements in AI, cybersecurity, and cloud computing.</div>
+          </div>
+          <div class="vertical-card">
+            <div class="vertical-card-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="vertical-card-title">Finance</div>
+            <div class="vertical-card-desc">Investing in fintech companies transforming how people bank, invest, and manage risk.</div>
+          </div>
+          <div class="vertical-card">
+            <div class="vertical-card-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div class="vertical-card-title">Healthcare</div>
+            <div class="vertical-card-desc">Supporting healthcare companies improving patient outcomes through digital health and biotech.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Cards -->
+      <div id="news-cards" class="subsection fade-up">
+        <h3 class="subsection-title">News Cards</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: flex column, image (16/10), body with tag + date meta row, title below, 1px border, hover translateY(-4px)</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:1200px;">
+          <div class="news-card">
+            <div class="news-card-image" style="background:linear-gradient(135deg, #2a1a3a 0%, #1a2a3a 100%);"></div>
+            <div class="news-card-body">
+              <div class="news-card-meta">
+                <span class="news-card-tag">Insights</span>
+                <span class="news-card-date">10.15.2025</span>
+              </div>
+              <div class="news-card-title">Demystifying the Due Diligence Process</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="news-card-image" style="background:linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 100%);"></div>
+            <div class="news-card-body">
+              <div class="news-card-meta">
+                <span class="news-card-tag">Guides</span>
+                <span class="news-card-date">10.02.2025</span>
+              </div>
+              <div class="news-card-title">The Role of Mentorship in Startup Success</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="news-card-image" style="background:linear-gradient(135deg, #1a1a2e 0%, #2e1a2e 100%);"></div>
+            <div class="news-card-body">
+              <div class="news-card-meta">
+                <span class="news-card-tag">Trends</span>
+                <span class="news-card-date">09.17.2025</span>
+              </div>
+              <div class="news-card-title">The Rise of Deep Tech: What VCs Need to Know</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ORGANISMS ==================== -->
+    <section id="organisms" class="section fade-up">
+      <p class="section-label">Organisms</p>
+      <h1 class="section-title">Page Sections</h1>
+      <p class="section-desc">Full page-level compositions extracted from the Anker template source. Each organism uses the exact spacing, grid, and nesting from the original Framer DOM.</p>
+
+      <!-- Header -->
+      <div id="header" class="subsection fade-up">
+        <h3 class="subsection-title">Header</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: sticky top, backdrop-filter blur(10px), bg rgba(3,3,3,0.2), nav items with duplicate text for hover effect, pill CTA button</p>
+
+        <div class="specimen-card" style="padding:0;overflow:hidden;border-radius:var(--radius-md);">
+          <div class="site-header">
+            <div class="site-header-inner">
+              <a href="#" class="site-header-logo">
+                <span class="site-header-logo-text">Anker<sup>*</sup></span>
+              </a>
+              <div class="site-header-nav">
+                <a href="#">Portfolio</a>
+                <a href="#">Vision</a>
+                <a href="#">Team</a>
+                <a href="#">Newsroom</a>
+                <a href="#">FAQ</a>
+                <button class="btn btn-ghost" style="padding:8px 16px;font-size:14px;">Contact <svg class="btn-arrow" viewBox="0 0 14 15" fill="none" style="width:12px;height:13px;"><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div id="hero" class="subsection fade-up">
+        <h3 class="subsection-title">Hero Section</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: centered layout, "Backing over 50+ companies" label, Erode serif display title with Instrument Serif italic accent, Geist body desc, two CTA buttons</p>
+
+        <div class="specimen-card" style="padding:0;overflow:hidden;border-radius:var(--radius-md);">
+          <div class="hero-section">
+            <div class="hero-label">Backing over 50+ companies</div>
+            <h1 class="hero-title">Fueling <em>Startups</em> with Capital</h1>
+            <p class="hero-desc">We invest in people, ideas, and companies with the potential to change the world.</p>
+            <div style="display:flex;gap:16px;justify-content:center;">
+              <button class="btn btn-ghost">Our Companies <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+              <button class="btn btn-accent">Contact <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Marquee -->
+      <div id="stats-marquee" class="subsection fade-up">
+        <h3 class="subsection-title">Stats Marquee</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: horizontally scrolling infinite marquee, items separated by 1px borders, stat-hero font size (7rem), duplicated for seamless loop</p>
+
+        <div class="specimen-card" style="padding:0;overflow:hidden;border-radius:var(--radius-md);">
+          <div class="stats-marquee">
+            <div class="stats-marquee-track">
+              <div class="stats-marquee-item"><div class="stats-marquee-value">5B</div><div class="stats-marquee-label">Capital Invested</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">20x</div><div class="stats-marquee-label">Average Return</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">30</div><div class="stats-marquee-label">Years Experience</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">1B</div><div class="stats-marquee-label">Realized Gains</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">80+</div><div class="stats-marquee-label">Employees</div></div>
+              <!-- Duplicate for seamless loop -->
+              <div class="stats-marquee-item"><div class="stats-marquee-value">5B</div><div class="stats-marquee-label">Capital Invested</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">20x</div><div class="stats-marquee-label">Average Return</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">30</div><div class="stats-marquee-label">Years Experience</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">1B</div><div class="stats-marquee-label">Realized Gains</div></div>
+              <div class="stats-marquee-item"><div class="stats-marquee-value">80+</div><div class="stats-marquee-label">Employees</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div id="cta" class="subsection fade-up">
+        <h3 class="subsection-title">CTA Section</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: centered, Erode serif h2 (3.25rem), accent CTA button, bordered top/bottom, 120px vertical padding</p>
+
+        <div class="specimen-card" style="padding:0;overflow:hidden;border-radius:var(--radius-md);">
+          <div class="cta-section">
+            <h2 class="cta-section-title">Let's Shape the Future Together.</h2>
+            <button class="btn btn-accent">Contact <svg class="btn-arrow" viewBox="0 0 14 15" fill="none"><path d="M 1.288 6.678 L 0.563 6.678 L 0.563 8.126 L 1.288 8.126 Z M 12.552 8.126 C 12.952 8.126 13.276 7.802 13.276 7.402 C 13.276 7.002 12.952 6.678 12.552 6.678 Z M 1.288 8.126 L 12.552 8.126 L 12.552 6.678 L 1.288 6.678 Z" fill="currentColor"/><path d="M 6.919 1.77 L 12.552 7.402 L 6.919 13.034" stroke="currentColor" stroke-width="1.45" stroke-linecap="square" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div id="footer" class="subsection fade-up">
+        <h3 class="subsection-title">Footer</h3>
+        <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:24px">From source: logo + 3-column link grid (Main, Support, Social), bottom bar with address + copyright + credit, 1px border-top</p>
+
+        <div class="specimen-card" style="padding:0;overflow:hidden;border-radius:var(--radius-md);">
+          <div class="site-footer">
+            <div class="site-footer-top">
+              <div>
+                <div class="site-footer-logo">Anker<sup>*</sup></div>
+              </div>
+              <div class="site-footer-columns">
+                <div class="site-footer-col">
+                  <h4>Main</h4>
+                  <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Vision</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#">Newsroom</a></li>
+                  </ul>
+                </div>
+                <div class="site-footer-col">
+                  <h4>Support</h4>
+                  <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">404</a></li>
+                  </ul>
+                </div>
+                <div class="site-footer-col">
+                  <h4>Social</h4>
+                  <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Linkedin</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">X</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="site-footer-bottom">
+              <span class="site-footer-address">123 Main St, San Francisco, CA 94105</span>
+              <span class="site-footer-copy">&copy;2025. All right reserved</span>
+              <span class="site-footer-credit">By <a href="#">flowit studio</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animations -->
+      <div id="animations" class="subsection fade-up">
+        <h3 class="subsection-title">Animation Reference</h3>
+
+        <div class="animation-demo">
+          <p class="animation-demo-label">Entrance — Fade Up</p>
+          <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:16px">From source appear animation JSON: opacity 0.001 → 1, y: 50 → 0, duration 0.7s, delay 1.7s, easing cubic-bezier(0.12, 0.23, 0.13, 0.96)</p>
+          <div class="fade-up-demo" id="fadeUpDemo">
+            <div class="fade-up-item">Item 1</div>
+            <div class="fade-up-item">Item 2</div>
+            <div class="fade-up-item">Item 3</div>
+            <div class="fade-up-item">Item 4</div>
+          </div>
+          <button class="replay-btn" onclick="replayFadeUp()">Replay Animation</button>
+        </div>
+
+        <div class="animation-demo">
+          <p class="animation-demo-label">Hover — Card Lift</p>
+          <p style="color:var(--color-text-dimmed);font-size:13px;margin-bottom:16px">translateY(-4px) on hover, transition 300ms cubic-bezier(0.12, 0.23, 0.13, 0.96)</p>
+          <div style="display:flex;gap:16px">
+            <div style="width:150px;height:100px;background:var(--color-bg-elevated);border:1px solid var(--color-border-default);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--color-text-dimmed);transition:transform 300ms var(--ease-out);cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">Hover me</div>
+            <div style="width:150px;height:100px;background:var(--color-bg-elevated);border:1px solid var(--color-border-default);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;color:var(--color-text-dimmed);transition:transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);cursor:pointer;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-elevated)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">Hover + Shadow</div>
+          </div>
+        </div>
+
+        <div class="animation-demo">
+          <p class="animation-demo-label">Animation Specs</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;">
+            <div class="specimen-card">
+              <p style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-muted);margin-bottom:8px;">ENTRANCE</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">translateY: 50px → 0</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">opacity: 0.001 → 1</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">duration: 700ms</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">easing: cubic-bezier(0.12, 0.23, 0.13, 0.96)</p>
+            </div>
+            <div class="specimen-card">
+              <p style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-muted);margin-bottom:8px;">HOVER</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">translateY: -4px</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">scale: 1.03 (images)</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">duration: 300ms</p>
+              <p style="font-size:14px;color:var(--color-text-secondary);">easing: ease-out</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// Scroll-spy: highlight active sidebar link based on visible section
+const sections = document.querySelectorAll('.subsection[id], .section[id]');
+const sidebarLinks = document.querySelectorAll('.sidebar nav a');
+
+const spyObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      sidebarLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(section => {
+  if (section.id) spyObserver.observe(section);
+});
+
+// Fade-up on scroll
+const fadeEls = document.querySelectorAll('.fade-up');
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+fadeEls.forEach(el => fadeObserver.observe(el));
+
+// Replay fade-up demo
+function replayFadeUp() {
+  const items = document.querySelectorAll('#fadeUpDemo .fade-up-item');
+  items.forEach(item => {
+    item.classList.remove('animate');
+  });
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      items.forEach(item => item.classList.add('animate'));
+    });
+  });
+}
+
+// Trigger initial animation demo
+setTimeout(() => {
+  document.querySelectorAll('#fadeUpDemo .fade-up-item').forEach(item => {
+    item.classList.add('animate');
+  });
+}, 500);
+</script>
+</body>
+</html>

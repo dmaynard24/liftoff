@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work &mdash; Refined&reg;</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Halant:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ========== CSS CUSTOM PROPERTIES ========== */
+    :root {
+      /* Backgrounds */
+      --bg-page: #000000;
+      --bg-elevated: #0d0d0d;
+      --bg-card: #141414;
+      --bg-card-alt: #151515;
+      --bg-input: #171717;
+      --bg-subtle: #1c1c1c;
+
+      /* Text */
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.5);
+      --text-muted: #858588;
+      --text-tertiary: rgba(255, 255, 255, 0.15);
+
+      /* Accent */
+      --accent-green: #cae8bd;
+      --accent-green-14: rgba(202, 232, 189, 0.14);
+      --accent-green-21: rgba(202, 232, 189, 0.21);
+      --accent-blue: #2b7fff;
+
+      /* Borders */
+      --border-default: rgba(255, 255, 255, 0.06);
+      --border-subtle: rgba(255, 255, 255, 0.03);
+      --border-medium: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.1);
+      --border-hover: rgba(255, 255, 255, 0.15);
+
+      /* Shadows */
+      --shadow-card: 0px 0.6px 1.6px -1.5px rgba(0,0,0,0.17), 0px 2.3px 6px -3px rgba(0,0,0,0.14), 0px 10px 26px -4.5px rgba(0,0,0,0.02);
+      --shadow-green-glow: 0px 0.6px 1.9px -0.5px rgba(202,232,189,0.14), 0px 1.9px 5.8px -1px rgba(202,232,189,0.15), 0px 5.1px 15.3px -1.5px rgba(202,232,189,0.16), 0px 16px 48px -2px rgba(202,232,189,0.21);
+      --shadow-floating: 0px 8px 24px 0px rgba(0,0,0,0.5), 0px -8px 24px 0px rgba(255,255,255,0.04);
+
+      /* Radius */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 40px;
+      --radius-full: 80px;
+
+      /* Layout */
+      --content-max: 840px;
+      --content-narrow: 440px;
+
+      /* Animation */
+      --ease: cubic-bezier(0.44, 0, 0.56, 1);
+      --duration: 0.3s;
+    }
+
+    /* ========== CSS RESET ========== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      font-family: 'Geist', 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: var(--bg-page);
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; height: auto; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    ul, ol { list-style: none; }
+    input, textarea { font: inherit; color: inherit; }
+
+    /* ========== SKIP LINK ========== */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      background: var(--accent-green);
+      color: #000;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      z-index: 1000;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* ========== HEADER / NAV ========== */
+    .header {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-full);
+      padding: 6px;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+      color: var(--text-secondary);
+    }
+    .nav-link:hover, .nav-link[aria-current="page"] {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+    .nav-link svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ========== TYPOGRAPHY ========== */
+    .heading-display {
+      font-family: 'Halant', serif;
+      font-weight: 400;
+      font-size: 80px;
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+    }
+    .heading-display em {
+      font-style: italic;
+    }
+    .heading-hero {
+      font-family: 'Halant', serif;
+      font-weight: 400;
+      font-size: 96px;
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+    }
+    .heading-4xl {
+      font-family: 'Halant', serif;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+    .heading-3xl {
+      font-family: 'Geist', sans-serif;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .heading-2xl {
+      font-family: 'Geist', sans-serif;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+    .heading-xl {
+      font-family: 'Geist', sans-serif;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+    .text-lg {
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+    .text-md {
+      font-size: 18px;
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+    }
+    .text-sm {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .text-xs {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .text-muted { color: var(--text-secondary); }
+    .text-green { color: var(--accent-green); }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1;
+      transition: all var(--duration) var(--ease);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--accent-green);
+      color: #000;
+    }
+    .btn-primary:hover {
+      box-shadow: var(--shadow-green-glow);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+      border: 1px solid var(--border-medium);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-hover);
+    }
+    .btn-lg {
+      padding: 16px 32px;
+      font-size: 16px;
+    }
+    .btn-sm {
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+
+    /* ========== BADGE ========== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-medium);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ========== TAG ========== */
+    .tag {
+      display: inline-flex;
+      padding: 4px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* ========== LAYOUT ========== */
+    .section {
+      width: 100%;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    .section-spacer {
+      padding-top: 160px;
+      padding-bottom: 80px;
+    }
+    .section-spacer-sm {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(50px, 1fr));
+      gap: 16px;
+    }
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+    }
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+    }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-4 { gap: 4px; }
+    .gap-8 { gap: 8px; }
+    .gap-12 { gap: 12px; }
+    .gap-16 { gap: 16px; }
+    .gap-24 { gap: 24px; }
+    .gap-40 { gap: 40px; }
+    .gap-64 { gap: 64px; }
+    .text-center { text-align: center; }
+
+    /* ========== SECTION LABEL ========== */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+    .section-label .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+    }
+
+    /* ========== DIVIDER ========== */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border-default);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      padding-top: 160px;
+      padding-bottom: 80px;
+      text-align: center;
+    }
+    .hero-heading {
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.5;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    /* ========== PROJECT CARDS ========== */
+    .project-card {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg-card);
+      transition: transform var(--duration) var(--ease);
+      cursor: pointer;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+    }
+    .project-card-image {
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      position: relative;
+    }
+    .project-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .project-card-image .card-tags {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      gap: 8px;
+    }
+    .project-card-image .card-tag {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .project-card-body {
+      padding: 20px;
+    }
+    .project-card-body h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .project-card-body p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* ========== GRADIENT IMAGE PLACEHOLDERS ========== */
+    .img-halo {
+      background: linear-gradient(135deg, #2d1a0e 0%, #1a3a2a 30%, #e8a090 60%, #f0d0c0 100%);
+    }
+    .img-meridian {
+      background: linear-gradient(135deg, #1a0a2a 0%, #4a2a6a 30%, #c070e0 60%, #e0a0f0 100%);
+    }
+    .img-atlas {
+      background: linear-gradient(135deg, #3a2a0a 0%, #6a5a1a 30%, #e0c040 60%, #f0e080 100%);
+    }
+    .img-voxel {
+      background: linear-gradient(135deg, #0a1a3a 0%, #1a3a6a 30%, #4080c0 60%, #80b0e0 100%);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      border-top: 1px solid var(--border-default);
+      padding: 32px 0;
+      margin-top: 160px;
+    }
+    .footer-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-links {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ========== SCROLL ANIMATIONS ========== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1199px) {
+      .heading-display { font-size: 64px; }
+      .heading-hero { font-size: 80px; }
+      .heading-4xl { font-size: 40px; }
+      .section-spacer { padding-top: 120px; padding-bottom: 64px; }
+    }
+    @media (max-width: 809px) {
+      .heading-display { font-size: 48px; }
+      .heading-hero { font-size: 56px; }
+      .heading-4xl { font-size: 32px; }
+      .heading-3xl { font-size: 24px; }
+      .heading-2xl { font-size: 22px; }
+      .heading-xl { font-size: 20px; }
+      .text-lg { font-size: 18px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .section-spacer { padding-top: 80px; padding-bottom: 40px; }
+      .hero { padding-top: 120px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    /* ========== REDUCED MOTION ========== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><polyline points="9 21 9 14 15 14 15 21"/></svg>
+      </a>
+      <a href="shop.html" class="nav-link" aria-label="Shop">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      </a>
+      <a href="work.html" class="nav-link" aria-current="page" aria-label="Work">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </a>
+      <a href="blog.html" class="nav-link" aria-label="Blog">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </a>
+      <a href="contact.html" class="nav-link" aria-label="Contact">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ========== WORK HERO ========== -->
+    <section class="section hero" aria-label="Work hero">
+      <div class="fade-up">
+        <div style="display:flex;justify-content:center;margin-bottom:24px;">
+          <span class="badge">Work</span>
+        </div>
+        <h1 class="heading-display hero-heading">The hall<br><em>of fame.</em></h1>
+      </div>
+    </section>
+
+    <!-- ========== PROJECT GRID ========== -->
+    <section class="section section-spacer-sm" aria-label="Projects">
+      <div class="grid-2">
+        <a href="work-detail.html" class="project-card fade-up">
+          <div class="project-card-image img-halo">
+            <div class="card-tags">
+              <span class="card-tag">Identity, Development</span>
+            </div>
+          </div>
+          <div class="project-card-body">
+            <h3>Halo</h3>
+            <p>Reinventing a brand and building a website that grows with it.</p>
+          </div>
+        </a>
+        <a href="#" class="project-card fade-up" style="transition-delay: 0.12s;">
+          <div class="project-card-image img-meridian">
+            <div class="card-tags">
+              <span class="card-tag">Identity, Design</span>
+            </div>
+          </div>
+          <div class="project-card-body">
+            <h3>Meridian</h3>
+            <p>A fresh identity for a brand that needed clarity and confidence.</p>
+          </div>
+        </a>
+        <a href="#" class="project-card fade-up">
+          <div class="project-card-image img-atlas">
+            <div class="card-tags">
+              <span class="card-tag">Development + Design</span>
+            </div>
+          </div>
+          <div class="project-card-body">
+            <h3>Atlas</h3>
+            <p>Redesigning a slow website into something faster and easier to use.</p>
+          </div>
+        </a>
+        <a href="#" class="project-card fade-up" style="transition-delay: 0.12s;">
+          <div class="project-card-image img-voxel">
+            <div class="card-tags">
+              <span class="card-tag">3D Technology, Design</span>
+            </div>
+          </div>
+          <div class="project-card-body">
+            <h3>Voxel</h3>
+            <p>Crafting 3D visuals to help products stand out and feel more real.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <span>Built by Marc</span>
+        <span>&middot;</span>
+        <a href="#">All templates</a>
+        <span>&middot;</span>
+        <a href="#">Get template</a>
+      </div>
+      <div class="footer-copy">&copy; Refined. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>

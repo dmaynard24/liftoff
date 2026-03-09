@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxio - Portfolio Framer Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@300;400;500;600;700;900&family=Manrope:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       RESET & TOKENS
+       ============================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000;
+      --bg-dark: #0e0e0e;
+      --bg-card: #1e1e1e;
+      --bg-hero: #111;
+      --border: #333;
+      --white: #fff;
+      --gray: #999;
+      --blue: #09f;
+      --white-5: rgba(255, 255, 255, 0.05);
+      --white-25: rgba(255, 255, 255, 0.25);
+      --white-50: rgba(255, 255, 255, 0.5);
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'Fragment Mono', monospace;
+      --font-manrope: 'Manrope', sans-serif;
+      --max-width: 1200px;
+      --transition: 0.3s cubic-bezier(0.12, 0.23, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--white);
+      background: var(--black);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* =============================================
+       HEADER / NAV
+       ============================================= */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--black);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #444, #222);
+      border-radius: 50%;
+    }
+
+    .header-name {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: var(--white);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .header-nav a {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: var(--white);
+      transition: color var(--transition);
+    }
+
+    .header-nav a:hover {
+      color: var(--gray);
+    }
+
+    .header-nav .btn-template {
+      padding: 8px 20px;
+      border: 1px solid var(--white-25);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .header-nav .btn-template:hover {
+      background: var(--white-5);
+      border-color: var(--white-50);
+    }
+
+    /* Mobile hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    /* =============================================
+       HERO
+       ============================================= */
+    .hero {
+      padding: 180px 40px 100px;
+      background: var(--bg-hero);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(180deg, transparent, var(--black));
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--bg-card);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 40px;
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+    }
+
+    .hero h1 {
+      font-size: 80px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--gray);
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity var(--transition);
+    }
+
+    .hero-cta:hover { opacity: 0.85; }
+
+    .hero-cta svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* =============================================
+       SECTION SHARED
+       ============================================= */
+    .section {
+      padding: 100px 40px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 48px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* =============================================
+       PORTFOLIO GRID
+       ============================================= */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .project-card {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg-dark);
+      transition: border-color var(--transition), transform var(--transition);
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: #555;
+      transform: translateY(-4px);
+    }
+
+    .project-card-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--gray);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card-img::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.85));
+    }
+
+    .project-card-body {
+      padding: 0 24px 24px;
+    }
+
+    .project-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project-card-title {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--white);
+    }
+
+    .project-card-year {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* =============================================
+       ABOUT
+       ============================================= */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--gray);
+    }
+
+    .about-text strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      background: var(--bg-dark);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* Skills tags */
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .skill-tag {
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      background: var(--bg-dark);
+    }
+
+    /* =============================================
+       CAREER
+       ============================================= */
+    .career-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .career-item {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 48px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .career-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .career-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .career-role {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .career-dates {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .career-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--gray);
+    }
+
+    /* =============================================
+       WHY ME (FEATURES)
+       ============================================= */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      background: var(--bg-dark);
+      transition: border-color var(--transition);
+    }
+
+    .feature-card:hover {
+      border-color: #555;
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--gray);
+    }
+
+    /* =============================================
+       TESTIMONIALS
+       ============================================= */
+    .testimonials-section {
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .testimonials-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 48px;
+    }
+
+    .testimonials-subtitle {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      background: var(--black);
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #333, #1a1a1a);
+    }
+
+    .testimonial-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .testimonial-role {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .testimonial-quote {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--gray);
+    }
+
+    /* =============================================
+       CTA / CONTACT
+       ============================================= */
+    .cta-section {
+      padding: 140px 40px;
+      text-align: center;
+    }
+
+    .cta-section .section-label {
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .cta-title em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity var(--transition);
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-secondary {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: underline;
+      transition: color var(--transition);
+    }
+
+    .btn-secondary:hover {
+      color: var(--white);
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 40px;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .footer-brand-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .footer-brand-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.5;
+      max-width: 280px;
+    }
+
+    .footer-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-col-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 2;
+      transition: color var(--transition);
+    }
+
+    .footer-col a:hover { color: var(--white); }
+
+    .footer-bottom {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding-top: 32px;
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .footer-copy a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-socials a {
+      font-size: 14px;
+      color: var(--gray);
+      transition: color var(--transition);
+    }
+
+    .footer-socials a:hover { color: var(--white); }
+
+    /* =============================================
+       FADE-UP ANIMATION
+       ============================================= */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger > .fade-up:nth-child(1) { transition-delay: 0ms; }
+    .stagger > .fade-up:nth-child(2) { transition-delay: 100ms; }
+    .stagger > .fade-up:nth-child(3) { transition-delay: 200ms; }
+    .stagger > .fade-up:nth-child(4) { transition-delay: 300ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+    }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 1024px) {
+      .hero h1 { font-size: 64px; }
+      .section-title { font-size: 40px; }
+      .cta-title { font-size: 48px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .testimonials-header { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .header { padding: 20px; }
+      .header-nav { display: none; }
+      .hamburger { display: flex; }
+
+      .hero { padding: 140px 20px 80px; }
+      .hero h1 { font-size: 40px; }
+      .hero-sub { font-size: 14px; }
+
+      .section { padding: 80px 20px; }
+      .section-title { font-size: 32px; }
+
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .career-item { grid-template-columns: 1fr; gap: 16px; }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 80px 20px; }
+      .cta-title { font-size: 36px; }
+      .cta-buttons { flex-direction: column; }
+
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="/" class="header-logo">
+      <div class="header-avatar"><div class="header-avatar-placeholder"></div></div>
+      <span class="header-name">Paul Smith</span>
+    </a>
+    <nav class="header-nav">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#" class="btn-template">Get template</a>
+    </nav>
+    <div class="hamburger" onclick="this.classList.toggle('active')">
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge fade-up">
+        <span class="hero-badge-dot"></span>
+        Available for freelance
+      </div>
+      <h1 class="fade-up">Hello, I'm Paul 👋<br>Product designer<br>crafting clean &amp; <em>modern</em> designs</h1>
+      <p class="hero-sub fade-up">Creating products that look amazing and convert well. This way both sides will be satisfied.</p>
+      <a href="#contact" class="hero-cta fade-up">
+        Book a call
+        <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="section" id="portfolio">
+    <div class="section-label fade-up">Portfolio</div>
+    <h2 class="section-title fade-up">My Latest<br><em>Projects</em></h2>
+    <div class="portfolio-grid stagger">
+      <a href="project.html" class="project-card fade-up">
+        <div class="project-card-img" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">app screenshot</div>
+        <div class="project-card-body">
+          <div class="project-card-row">
+            <span class="project-card-title">Logoipsum Mobile App</span>
+            <span class="project-card-year">2024</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="project-card fade-up">
+        <div class="project-card-img" style="background:linear-gradient(135deg,#1e3a2f,#0d2818)">landing page screenshot</div>
+        <div class="project-card-body">
+          <div class="project-card-row">
+            <span class="project-card-title">Logo Landing Page</span>
+            <span class="project-card-year">2023</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="project-card fade-up">
+        <div class="project-card-img" style="background:linear-gradient(135deg,#2e1a2e,#3e1640)">website screenshot</div>
+        <div class="project-card-body">
+          <div class="project-card-row">
+            <span class="project-card-title">Logo Ipsum Website Project</span>
+            <span class="project-card-year">2024</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="project-card fade-up">
+        <div class="project-card-img" style="background:linear-gradient(135deg,#1a2e3e,#0d1828)">watch app screenshot</div>
+        <div class="project-card-body">
+          <div class="project-card-row">
+            <span class="project-card-title">Logoipsum Watch App</span>
+            <span class="project-card-year">2024</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section-label fade-up">About</div>
+    <h2 class="section-title fade-up">I am an Architect Turned Into a<br><em>Product Designer</em></h2>
+    <div class="about-grid">
+      <div class="fade-up">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">8+</div>
+            <div class="stat-label">Years of experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">20+</div>
+            <div class="stat-label">Clients</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">40+</div>
+            <div class="stat-label">Projects Completed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">10,000+</div>
+            <div class="stat-label">Hours of Designing</div>
+          </div>
+        </div>
+        <div class="skills-row">
+          <span class="skill-tag">Logo Design</span>
+          <span class="skill-tag">Mobile App Design</span>
+          <span class="skill-tag">Product Design</span>
+          <span class="skill-tag">Web Design</span>
+        </div>
+      </div>
+      <div class="about-text fade-up">
+        <p><strong>Creating products that look amazing and convert well.</strong> This way both sides will be satisfied. Say no more to products that benefit only one side. With my design skills you will scale to the moon!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section class="section">
+    <div class="section-label fade-up">Career</div>
+    <h2 class="section-title fade-up">And This Is<br><em>My Career</em></h2>
+    <div class="career-list">
+      <div class="career-item fade-up">
+        <div class="career-header">
+          <span class="career-role">Freelance Architect</span>
+          <span class="career-dates">2016 - 2020</span>
+        </div>
+        <p class="career-desc"></p>
+      </div>
+      <div class="career-item fade-up">
+        <div class="career-header">
+          <span class="career-role">Product Designer at Spotify</span>
+          <span class="career-dates">2020 - 2022</span>
+        </div>
+        <p class="career-desc">At Spotify, I helped shape innovative features for millions of users globally. My focus was on creating seamless music discovery experiences, enhancing user interfaces, and optimizing cross-platform navigation, which led to an improved product flow and increased user satisfaction.</p>
+      </div>
+      <div class="career-item fade-up">
+        <div class="career-header">
+          <span class="career-role">Freelance Product Designer</span>
+          <span class="career-dates">2022 - Now</span>
+        </div>
+        <p class="career-desc">Now I design user-centric products that align with client visions. As a freelance product designer, I collaborate with startups and established companies, crafting solutions that elevate user experiences and increase engagement across both digital and physical interfaces.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY ME -->
+  <section class="section">
+    <div class="section-label fade-up">Why me?</div>
+    <h2 class="section-title fade-up">I'll help your <em>project</em><br>shine</h2>
+    <div class="features-grid stagger">
+      <div class="feature-card fade-up">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="feature-title">Efficient Workflow</div>
+        <div class="feature-desc">Streamlined design process for rapid delivery, meeting tight deadlines without compromising quality or detail.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feature-title">Collaborative Process</div>
+        <div class="feature-desc">I work closely with you, integrating your feedback to create designs that exceed your expectations.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="feature-title">Attention to Detail</div>
+        <div class="feature-desc">Meticulous attention to every element, ensuring a polished and cohesive final product that impresses.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div class="section" style="padding-top:100px;padding-bottom:100px;">
+      <div class="testimonials-header">
+        <div>
+          <div class="section-label fade-up">Testimonials</div>
+          <h2 class="section-title fade-up" style="margin-bottom:0">See what others say<br><em>about me</em></h2>
+        </div>
+        <p class="testimonials-subtitle fade-up">I have helped many businesses make a killer design for their product. Wanna be the next? <a href="#contact" class="btn-secondary">Contact</a></p>
+      </div>
+      <div class="testimonial-grid stagger">
+        <div class="testimonial-card fade-up">
+          <div class="testimonial-author">
+            <div class="testimonial-avatar"></div>
+            <div>
+              <div class="testimonial-name">Jake R.</div>
+              <div class="testimonial-role">Product Manager at TechWave</div>
+            </div>
+          </div>
+          <p class="testimonial-quote">Paul transformed our outdated website into a modern, intuitive platform. The process was seamless from start to finish, and his design has significantly improved our user experience. We couldn't be happier!</p>
+        </div>
+        <div class="testimonial-card fade-up">
+          <div class="testimonial-author">
+            <div class="testimonial-avatar"></div>
+            <div>
+              <div class="testimonial-name">Lisa P.</div>
+              <div class="testimonial-role">CEO of GreenPath Solutions</div>
+            </div>
+          </div>
+          <p class="testimonial-quote">Working with Paul was a game changer! He quickly understood our vision and translated it into a sleek, user-friendly design. His attention to detail and creative approach truly made our project shine!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="section-label fade-up">Contact</div>
+    <h2 class="cta-title fade-up">Let's Get in<br><em>Touch</em></h2>
+    <p class="cta-sub fade-up">Let's connect and start with your project.</p>
+    <div class="cta-buttons fade-up">
+      <a href="#" class="btn-primary">
+        Book a call
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+      <span style="color:var(--gray);font-size:14px">Or email <a href="#" class="btn-secondary">hello@paulsmith.com</a></span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Paul Smith</div>
+        <p class="footer-brand-desc">Product designer crafting clean &amp; modern designs</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-col">
+          <div class="footer-col-title">Pages</div>
+          <a href="#">Portfolio</a>
+          <a href="#">About</a>
+          <a href="#">Contact me</a>
+          <a href="#">Book a call</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Social</div>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Behance</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Proxio Template. Template created by <a href="#">Sebadam</a>. Built in <a href="#">Framer</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+    // Header scroll effect
+    let lastScroll = 0;
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      const current = window.scrollY;
+      header.style.transform = current > 80 && current > lastScroll ? 'translateY(-100%)' : 'translateY(0)';
+      header.style.transition = 'transform 0.3s ease';
+      lastScroll = current;
+    }, { passive: true });
+  </script>
+
+</body>
+</html>

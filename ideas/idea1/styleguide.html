@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxio — Design System Styleguide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@300;400;500;600;700;900&family=Manrope:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       TOKENS (identical to index.html)
+       ============================================= */
+    :root {
+      --black: #000;
+      --bg-dark: #0e0e0e;
+      --bg-card: #1e1e1e;
+      --bg-hero: #111;
+      --bg-code: #131313;
+      --border: #333;
+      --white: #fff;
+      --gray: #999;
+      --blue: #09f;
+      --white-5: rgba(255, 255, 255, 0.05);
+      --white-10: rgba(255, 255, 255, 0.10);
+      --white-25: rgba(255, 255, 255, 0.25);
+      --white-50: rgba(255, 255, 255, 0.50);
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'Fragment Mono', monospace;
+      --font-manrope: 'Manrope', sans-serif;
+      --max-width: 1200px;
+      --transition: 0.3s cubic-bezier(0.12, 0.23, 0.5, 1);
+
+      /* Semantic colors */
+      --success: #4ade80;
+      --warning: #fbbf24;
+      --error: #f87171;
+    }
+
+    /* =============================================
+       RESET
+       ============================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--white);
+      background: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--blue); text-decoration: underline; }
+    a:hover { color: var(--white); }
+
+    /* =============================================
+       STYLEGUIDE LAYOUT
+       ============================================= */
+    .sg-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--black);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sg-header-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sg-header-title span {
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--gray);
+    }
+
+    .sg-nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    .sg-nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .sg-nav a:hover { color: var(--white); }
+
+    .sg-page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 80px 40px 120px;
+    }
+
+    .sg-page-title {
+      font-size: 64px;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .sg-page-title em { font-weight: 300; font-style: italic; }
+
+    .sg-page-desc {
+      font-size: 18px;
+      color: var(--gray);
+      max-width: 600px;
+      margin-bottom: 80px;
+      line-height: 1.6;
+    }
+
+    /* Section */
+    .sg-section {
+      margin-bottom: 100px;
+    }
+
+    .sg-section-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .sg-section-title {
+      font-size: 32px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .sg-section-desc {
+      font-size: 15px;
+      color: var(--gray);
+      max-width: 560px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* Subsection */
+    .sg-sub {
+      margin-bottom: 48px;
+    }
+
+    .sg-sub-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sg-sub-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Card wrapper for specimens */
+    .sg-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    .sg-card-body {
+      padding: 32px;
+    }
+
+    .sg-card-footer {
+      padding: 16px 32px;
+      border-top: 1px solid var(--border);
+      background: var(--black);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* Grid helpers */
+    .sg-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .sg-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+    .sg-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px; }
+    .sg-flex { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .sg-flex-col { display: flex; flex-direction: column; gap: 12px; }
+    .sg-flex-16 { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+
+    /* =============================================
+       FOUNDATIONS — COLORS
+       ============================================= */
+    .color-swatch {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .color-swatch-preview {
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      padding: 10px 14px;
+    }
+
+    .color-swatch-info {
+      padding: 12px 14px;
+      background: var(--bg-dark);
+    }
+
+    .color-swatch-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+
+    .color-swatch-value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* =============================================
+       FOUNDATIONS — TYPE SCALE
+       ============================================= */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .type-row:last-child { border-bottom: none; }
+
+    .type-meta {
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+
+    .type-meta-size {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .type-meta-weight {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #555;
+    }
+
+    .type-sample {
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* =============================================
+       FOUNDATIONS — SPACING
+       ============================================= */
+    .space-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 0;
+    }
+
+    .space-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gray);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .space-bar {
+      height: 24px;
+      background: rgba(0, 153, 255, 0.2);
+      border: 1px solid rgba(0, 153, 255, 0.4);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .space-px {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #555;
+      min-width: 40px;
+    }
+
+    /* =============================================
+       FOUNDATIONS — RADIUS
+       ============================================= */
+    .radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .radius-preview {
+      width: 64px;
+      height: 64px;
+      border: 1px solid var(--white-25);
+      background: var(--bg-card);
+    }
+
+    .radius-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray);
+      text-align: center;
+    }
+
+    /* =============================================
+       FOUNDATIONS — SHADOWS
+       ============================================= */
+    .shadow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .shadow-preview {
+      width: 100%;
+      height: 80px;
+      border-radius: 12px;
+      background: var(--bg-card);
+    }
+
+    .shadow-label-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .shadow-label-val {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray);
+      text-align: center;
+    }
+
+    /* =============================================
+       ATOMS — BUTTONS
+       ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      border-radius: 100px;
+      transition: opacity var(--transition), background var(--transition), border-color var(--transition), transform 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* Primary */
+    .btn-primary { background: var(--white); color: var(--black); }
+    .btn-primary:hover { opacity: 0.85; color: var(--black); }
+
+    /* Secondary / Ghost */
+    .btn-ghost { background: transparent; color: var(--white); border: 1px solid var(--white-25); }
+    .btn-ghost:hover { background: var(--white-5); border-color: var(--white-50); }
+
+    /* Blue */
+    .btn-blue { background: var(--blue); color: var(--white); }
+    .btn-blue:hover { opacity: 0.85; }
+
+    /* Sizes */
+    .btn-sm { font-size: 13px; padding: 8px 18px; }
+    .btn-md { font-size: 14px; padding: 12px 24px; }
+    .btn-lg { font-size: 15px; padding: 16px 32px; }
+
+    /* Disabled */
+    .btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+    .btn[disabled]:hover { opacity: 0.35; transform: none; }
+
+    /* =============================================
+       ATOMS — TAGS
+       ============================================= */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--white);
+    }
+
+    .tag-sm { font-size: 12px; padding: 4px 12px; }
+    .tag-blue { border-color: rgba(0,153,255,0.3); background: rgba(0,153,255,0.08); color: var(--blue); }
+    .tag-green { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); color: var(--success); }
+    .tag-yellow { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.08); color: var(--warning); }
+    .tag-red { border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); color: var(--error); }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* =============================================
+       ATOMS — INPUTS
+       ============================================= */
+    .input {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--white);
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color var(--transition);
+      width: 100%;
+    }
+
+    .input::placeholder { color: #555; }
+    .input:focus { border-color: var(--white-50); }
+    .input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .input-error { border-color: var(--error); }
+
+    .textarea {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--white);
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color var(--transition);
+      width: 100%;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .textarea::placeholder { color: #555; }
+    .textarea:focus { border-color: var(--white-50); }
+
+    .input-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .input-error-msg {
+      font-size: 12px;
+      color: var(--error);
+      margin-top: 4px;
+    }
+
+    /* =============================================
+       ATOMS — BADGE / DOT
+       ============================================= */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--white);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .badge-dot-green { background: var(--success); }
+    .badge-dot-yellow { background: var(--warning); }
+    .badge-dot-red { background: var(--error); }
+
+    /* =============================================
+       ATOMS — AVATARS
+       ============================================= */
+    .avatar {
+      border-radius: 50%;
+      background: linear-gradient(135deg, #444, #222);
+      flex-shrink: 0;
+    }
+
+    .avatar-sm { width: 32px; height: 32px; }
+    .avatar-md { width: 40px; height: 40px; }
+    .avatar-lg { width: 56px; height: 56px; }
+
+    /* =============================================
+       ATOMS — DIVIDERS
+       ============================================= */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      width: 100%;
+    }
+
+    /* =============================================
+       MOLECULES — PROJECT CARD
+       ============================================= */
+    .project-card {
+      display: block;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg-dark);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .project-card:hover { border-color: #555; transform: translateY(-4px); color: var(--white); }
+
+    .project-card-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card-img::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.85));
+    }
+
+    .project-card-body { padding: 0 24px 24px; }
+
+    .project-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project-card-title { font-size: 20px; font-weight: 500; color: var(--white); }
+    .project-card-year { font-family: var(--font-mono); font-size: 14px; color: var(--gray); }
+
+    /* =============================================
+       MOLECULES — STAT CARD
+       ============================================= */
+    .stat-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      background: var(--bg-dark);
+    }
+
+    .stat-value { font-size: 32px; font-weight: 600; color: var(--white); letter-spacing: -0.02em; margin-bottom: 4px; }
+    .stat-label { font-size: 14px; color: var(--gray); }
+
+    /* =============================================
+       MOLECULES — FEATURE CARD
+       ============================================= */
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      background: var(--bg-dark);
+      transition: border-color var(--transition);
+    }
+
+    .feature-card:hover { border-color: #555; }
+
+    .feature-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon svg { width: 20px; height: 20px; stroke: var(--white); fill: none; stroke-width: 1.5; }
+    .feature-title { font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .feature-desc { font-size: 14px; line-height: 1.5; color: var(--gray); }
+
+    /* =============================================
+       MOLECULES — TESTIMONIAL CARD
+       ============================================= */
+    .testimonial-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      background: var(--black);
+    }
+
+    .testimonial-author { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .testimonial-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .testimonial-role { font-size: 13px; color: var(--gray); }
+    .testimonial-quote { font-size: 15px; line-height: 1.6; color: var(--gray); }
+
+    /* =============================================
+       MOLECULES — CODE BLOCK
+       ============================================= */
+    .code-block {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg-code);
+    }
+
+    .code-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .code-dot-red { background: #ff5f57; }
+    .code-dot-yellow { background: #febc2e; }
+    .code-dot-green { background: #28c840; }
+
+    .code-body { padding: 24px; overflow-x: auto; }
+    .code-body pre { font-family: var(--font-mono); font-size: 14px; line-height: 1.7; color: var(--gray); margin: 0; }
+    .code-body .kw { color: #c678dd; }
+    .code-body .str { color: #98c379; }
+    .code-body .fn { color: #61afef; }
+    .code-body .var { color: #e06c75; }
+
+    /* =============================================
+       MOLECULES — BLOCKQUOTE
+       ============================================= */
+    .blockquote {
+      padding: 32px 40px;
+      border-left: 2px solid var(--white-25);
+      background: var(--bg-dark);
+      border-radius: 0 16px 16px 0;
+    }
+
+    .blockquote p { font-size: 20px; font-weight: 400; font-style: italic; line-height: 1.5; color: var(--white); }
+
+    /* =============================================
+       MOLECULES — CAREER ITEM
+       ============================================= */
+    .career-item {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 48px; padding: 24px 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .career-role { font-size: 18px; font-weight: 500; color: var(--white); }
+    .career-dates { font-family: var(--font-mono); font-size: 13px; color: var(--gray); margin-top: 4px; }
+    .career-desc { font-size: 15px; line-height: 1.6; color: var(--gray); }
+
+    /* =============================================
+       ORGANISMS — HEADER
+       ============================================= */
+    .org-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 32px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--black);
+    }
+
+    .org-header-logo { display: flex; align-items: center; gap: 10px; }
+    .org-header-name { font-size: 14px; font-weight: 500; color: var(--white); }
+    .org-header-nav { display: flex; align-items: center; gap: 28px; }
+    .org-header-nav a { font-size: 14px; font-weight: 500; color: var(--white); text-decoration: none; transition: color var(--transition); }
+    .org-header-nav a:hover { color: var(--gray); }
+
+    /* =============================================
+       ORGANISMS — FOOTER
+       ============================================= */
+    .org-footer {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      background: var(--black);
+    }
+
+    .org-footer-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .org-footer-brand { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .org-footer-desc { font-size: 14px; color: var(--gray); line-height: 1.5; max-width: 260px; }
+    .org-footer-right { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .org-footer-col-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 12px; }
+    .org-footer-col a { display: block; font-size: 13px; color: var(--gray); line-height: 2; text-decoration: none; transition: color var(--transition); }
+    .org-footer-col a:hover { color: var(--white); }
+    .org-footer-bottom { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: #555; }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 768px) {
+      .sg-header { padding: 16px 20px; }
+      .sg-nav { display: none; }
+      .sg-page { padding: 48px 20px 80px; }
+      .sg-page-title { font-size: 40px; }
+      .sg-grid-2, .sg-grid-3, .sg-grid-4 { grid-template-columns: 1fr; }
+      .career-item { grid-template-columns: 1fr; gap: 12px; }
+      .org-footer-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <header class="sg-header">
+    <div class="sg-header-title">
+      Proxio Design System <span>v1.0</span>
+    </div>
+    <nav class="sg-nav">
+      <a href="#foundations">Foundations</a>
+      <a href="#atoms">Atoms</a>
+      <a href="#molecules">Molecules</a>
+      <a href="#organisms">Organisms</a>
+      <a href="index.html">Back to site</a>
+    </nav>
+  </header>
+
+  <main class="sg-page">
+
+    <!-- PAGE INTRO -->
+    <h1 class="sg-page-title">Design <em>System</em></h1>
+    <p class="sg-page-desc">A complete reference of tokens, components, and patterns used across the Proxio portfolio template. Built on Inter, powered by dark mode.</p>
+
+    <!-- ========================================
+         FOUNDATIONS
+         ======================================== -->
+    <div id="foundations" class="sg-section">
+      <div class="sg-section-label">Foundations</div>
+      <h2 class="sg-section-title">Color Palette</h2>
+      <p class="sg-section-desc">Core and semantic colors. All primary text passes WCAG AAA on dark backgrounds.</p>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Core Colors</div>
+        <div class="sg-grid-4">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#000"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Black</div><div class="color-swatch-value">#000000</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#0e0e0e"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Background Dark</div><div class="color-swatch-value">#0e0e0e</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#1e1e1e"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Card</div><div class="color-swatch-value">#1e1e1e</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#111"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Hero</div><div class="color-swatch-value">#111111</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#fff"><span style="color:#000;font-size:11px;font-family:var(--font-mono)">Aa</span></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">White</div><div class="color-swatch-value">#ffffff</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#999"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Gray / Muted</div><div class="color-swatch-value">#999999</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#333"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Border</div><div class="color-swatch-value">#333333</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#09f"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Accent Blue</div><div class="color-swatch-value">#0099ff</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Semantic Colors</div>
+        <div class="sg-grid-4">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#4ade80"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Success</div><div class="color-swatch-value">#4ade80</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#fbbf24"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Warning</div><div class="color-swatch-value">#fbbf24</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#f87171"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Error</div><div class="color-swatch-value">#f87171</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#131313"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">Code BG</div><div class="color-swatch-value">#131313</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Opacity Variants</div>
+        <div class="sg-grid-4">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.05);border:1px solid var(--border)"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">White 5%</div><div class="color-swatch-value">rgba(255,255,255,0.05)</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.10);border:1px solid var(--border)"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">White 10%</div><div class="color-swatch-value">rgba(255,255,255,0.10)</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.25);border:1px solid var(--border)"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">White 25%</div><div class="color-swatch-value">rgba(255,255,255,0.25)</div></div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:rgba(255,255,255,0.50);border:1px solid var(--border)"></div>
+            <div class="color-swatch-info"><div class="color-swatch-name">White 50%</div><div class="color-swatch-value">rgba(255,255,255,0.50)</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div class="sg-section">
+      <div class="sg-section-label">Foundations</div>
+      <h2 class="sg-section-title">Typography</h2>
+      <p class="sg-section-desc">Three font families: Inter for UI, Fragment Mono for labels and code, Manrope for accents.</p>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Font Families</div>
+        <div class="sg-grid-3">
+          <div class="sg-card">
+            <div class="sg-card-body">
+              <div style="font-family:var(--font-sans);font-size:48px;font-weight:400;letter-spacing:-0.03em;color:var(--white);margin-bottom:12px">Aa</div>
+              <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">Inter</div>
+              <div style="font-size:13px;color:var(--gray)">Primary — UI, headings, body</div>
+              <div style="font-size:12px;color:#555;margin-top:8px;font-family:var(--font-mono)">300 · 400 · 500 · 600 · 700 · 900</div>
+            </div>
+          </div>
+          <div class="sg-card">
+            <div class="sg-card-body">
+              <div style="font-family:var(--font-mono);font-size:48px;font-weight:400;color:var(--white);margin-bottom:12px">Aa</div>
+              <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">Fragment Mono</div>
+              <div style="font-size:13px;color:var(--gray)">Labels, dates, code blocks</div>
+              <div style="font-size:12px;color:#555;margin-top:8px;font-family:var(--font-mono)">400</div>
+            </div>
+          </div>
+          <div class="sg-card">
+            <div class="sg-card-body">
+              <div style="font-family:var(--font-manrope);font-size:48px;font-weight:600;color:var(--white);margin-bottom:12px">Aa</div>
+              <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">Manrope</div>
+              <div style="font-size:13px;color:var(--gray)">Accent — sparingly used</div>
+              <div style="font-size:12px;color:#555;margin-top:8px;font-family:var(--font-mono)">600</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Type Scale</div>
+        <div class="sg-card">
+          <div class="sg-card-body" style="padding:16px 32px">
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">80px</div><div class="type-meta-weight">400 · -0.03em</div></div>
+              <div class="type-sample" style="font-size:80px;font-weight:400;letter-spacing:-0.03em;line-height:1.1">Hero Display</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">64px</div><div class="type-meta-weight">400 · -0.03em</div></div>
+              <div class="type-sample" style="font-size:64px;font-weight:400;letter-spacing:-0.03em;line-height:1.1">Page Title</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">48px</div><div class="type-meta-weight">400 · -0.03em</div></div>
+              <div class="type-sample" style="font-size:48px;font-weight:400;letter-spacing:-0.03em;line-height:1.1">Section Title</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">32px</div><div class="type-meta-weight">600 · -0.02em</div></div>
+              <div class="type-sample" style="font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.2">Stat Value</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">20px</div><div class="type-meta-weight">500</div></div>
+              <div class="type-sample" style="font-size:20px;font-weight:500;line-height:1.3">Card Title</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">18px</div><div class="type-meta-weight">600</div></div>
+              <div class="type-sample" style="font-size:18px;font-weight:600;line-height:1.4">Feature Title</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">16px</div><div class="type-meta-weight">400</div></div>
+              <div class="type-sample" style="font-size:16px;font-weight:400;line-height:1.5;color:var(--gray)">Body text — the standard for paragraphs and descriptions.</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">14px</div><div class="type-meta-weight">500</div></div>
+              <div class="type-sample" style="font-size:14px;font-weight:500;line-height:1.4">Navigation · Button · Label</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">13px</div><div class="type-meta-weight">400</div></div>
+              <div class="type-sample" style="font-size:13px;font-weight:400;line-height:1.5;color:var(--gray)">Small text, captions, footer copy</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><div class="type-meta-size">14px</div><div class="type-meta-weight">mono · uppercase</div></div>
+              <div class="type-sample" style="font-family:var(--font-mono);font-size:14px;font-weight:400;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray)">Section Label</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Italic Headings</div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div style="font-size:48px;font-weight:400;letter-spacing:-0.03em;line-height:1.1;margin-bottom:16px">And This Is <em style="font-weight:300;font-style:italic">My Career</em></div>
+            <div style="font-size:13px;color:var(--gray);font-family:var(--font-mono)">Italic words use font-weight: 300 to create contrast within headings.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPACING -->
+    <div class="sg-section">
+      <div class="sg-section-label">Foundations</div>
+      <h2 class="sg-section-title">Spacing</h2>
+      <p class="sg-section-desc">Consistent spacing scale used for padding, margins, and gaps throughout the system.</p>
+
+      <div class="sg-card">
+        <div class="sg-card-body">
+          <div class="space-row"><div class="space-label">4px</div><div class="space-bar" style="width:4px"></div><div class="space-px">0.25rem</div></div>
+          <div class="space-row"><div class="space-label">8px</div><div class="space-bar" style="width:16px"></div><div class="space-px">0.5rem</div></div>
+          <div class="space-row"><div class="space-label">10px</div><div class="space-bar" style="width:20px"></div><div class="space-px">0.625rem</div></div>
+          <div class="space-row"><div class="space-label">16px</div><div class="space-bar" style="width:32px"></div><div class="space-px">1rem</div></div>
+          <div class="space-row"><div class="space-label">20px</div><div class="space-bar" style="width:40px"></div><div class="space-px">1.25rem</div></div>
+          <div class="space-row"><div class="space-label">24px</div><div class="space-bar" style="width:48px"></div><div class="space-px">1.5rem</div></div>
+          <div class="space-row"><div class="space-label">32px</div><div class="space-bar" style="width:64px"></div><div class="space-px">2rem</div></div>
+          <div class="space-row"><div class="space-label">40px</div><div class="space-bar" style="width:80px"></div><div class="space-px">2.5rem</div></div>
+          <div class="space-row"><div class="space-label">48px</div><div class="space-bar" style="width:96px"></div><div class="space-px">3rem</div></div>
+          <div class="space-row"><div class="space-label">80px</div><div class="space-bar" style="width:160px"></div><div class="space-px">5rem</div></div>
+          <div class="space-row"><div class="space-label">100px</div><div class="space-bar" style="width:200px"></div><div class="space-px">6.25rem</div></div>
+          <div class="space-row"><div class="space-label">140px</div><div class="space-bar" style="width:280px"></div><div class="space-px">8.75rem</div></div>
+        </div>
+        <div class="sg-card-footer">Used for: section padding (100px), grid gaps (24-32px), card padding (24-32px), component gaps (8-10px)</div>
+      </div>
+    </div>
+
+    <!-- BORDER RADIUS -->
+    <div class="sg-section">
+      <div class="sg-section-label">Foundations</div>
+      <h2 class="sg-section-title">Border Radius</h2>
+      <p class="sg-section-desc">From sharp corners for subtle elements to full pills for buttons and tags.</p>
+
+      <div class="sg-card">
+        <div class="sg-card-body">
+          <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-end">
+            <div class="radius-item"><div class="radius-preview" style="border-radius:0"></div><div class="radius-label">0px<br>—</div></div>
+            <div class="radius-item"><div class="radius-preview" style="border-radius:4px"></div><div class="radius-label">4px<br>Subtle</div></div>
+            <div class="radius-item"><div class="radius-preview" style="border-radius:10px"></div><div class="radius-label">10px<br>Input</div></div>
+            <div class="radius-item"><div class="radius-preview" style="border-radius:12px"></div><div class="radius-label">12px<br>Code block</div></div>
+            <div class="radius-item"><div class="radius-preview" style="border-radius:16px"></div><div class="radius-label">16px<br>Card</div></div>
+            <div class="radius-item"><div class="radius-preview" style="border-radius:100px"></div><div class="radius-label">100px<br>Pill / Button</div></div>
+            <div class="radius-item"><div class="radius-preview" style="border-radius:50%"></div><div class="radius-label">50%<br>Circle / Avatar</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHADOWS -->
+    <div class="sg-section">
+      <div class="sg-section-label">Foundations</div>
+      <h2 class="sg-section-title">Shadows &amp; Effects</h2>
+      <p class="sg-section-desc">Minimal shadow usage. Elevation is primarily conveyed through border and background shifts.</p>
+
+      <div class="sg-grid-3">
+        <div class="sg-card">
+          <div class="sg-card-body" style="text-align:center">
+            <div class="shadow-preview" style="border:1px solid var(--border)"></div>
+            <div style="margin-top:12px"><div class="shadow-label-name">Default</div><div class="shadow-label-val">1px border #333</div></div>
+          </div>
+        </div>
+        <div class="sg-card">
+          <div class="sg-card-body" style="text-align:center">
+            <div class="shadow-preview" style="border:1px solid #555;transform:translateY(-4px)"></div>
+            <div style="margin-top:12px"><div class="shadow-label-name">Hover Lift</div><div class="shadow-label-val">border #555 + translateY(-4px)</div></div>
+          </div>
+        </div>
+        <div class="sg-card">
+          <div class="sg-card-body" style="text-align:center">
+            <div class="shadow-preview" style="background:linear-gradient(180deg, transparent, rgba(0,0,0,0.85));border:1px solid var(--border)"></div>
+            <div style="margin-top:12px"><div class="shadow-label-name">Card Gradient</div><div class="shadow-label-val">linear-gradient to black 85%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+         ATOMS
+         ======================================== -->
+    <div id="atoms" class="sg-section">
+      <div class="sg-section-label">Atoms</div>
+      <h2 class="sg-section-title">Buttons</h2>
+      <p class="sg-section-desc">Three variants, three sizes. All use pill radius (100px) and scale down on active press.</p>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Variants</div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex" style="gap:16px">
+              <button class="btn btn-primary btn-md">Primary</button>
+              <button class="btn btn-ghost btn-md">Ghost</button>
+              <button class="btn btn-blue btn-md">Accent</button>
+              <button class="btn btn-primary btn-md" disabled>Disabled</button>
+            </div>
+          </div>
+          <div class="sg-card-footer">Variants: primary (white bg), ghost (transparent + border), accent (blue), disabled (35% opacity)</div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Sizes</div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex" style="gap:16px;align-items:center">
+              <button class="btn btn-primary btn-sm">Small</button>
+              <button class="btn btn-primary btn-md">Medium</button>
+              <button class="btn btn-primary btn-lg">Large</button>
+            </div>
+          </div>
+          <div class="sg-card-footer">sm: 8px 18px · md: 12px 24px · lg: 16px 32px</div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">With Icons</div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex" style="gap:16px">
+              <button class="btn btn-primary btn-md">Book a call <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>
+              <button class="btn btn-ghost btn-md">Visit Project <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>
+              <button class="btn btn-ghost btn-md"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAGS -->
+    <div class="sg-section">
+      <div class="sg-section-label">Atoms</div>
+      <h2 class="sg-section-title">Tags &amp; Badges</h2>
+      <p class="sg-section-desc">Used for skill labels, categories, and status indicators.</p>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Tags</div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex">
+              <span class="tag">Web Design</span>
+              <span class="tag">Product Design</span>
+              <span class="tag tag-sm">Small Tag</span>
+              <span class="tag tag-blue">Blue</span>
+              <span class="tag tag-green">Success</span>
+              <span class="tag tag-yellow">Warning</span>
+              <span class="tag tag-red">Error</span>
+            </div>
+          </div>
+          <div class="sg-card-footer">Default: #1e1e1e bg + #333 border · Semantic variants use 8% opacity fill + 30% border</div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Status Badges</div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex" style="gap:16px">
+              <div class="badge"><div class="badge-dot badge-dot-green"></div> Available for freelance</div>
+              <div class="badge"><div class="badge-dot badge-dot-yellow"></div> Limited availability</div>
+              <div class="badge"><div class="badge-dot badge-dot-red"></div> Unavailable</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INPUTS -->
+    <div class="sg-section">
+      <div class="sg-section-label">Atoms</div>
+      <h2 class="sg-section-title">Form Inputs</h2>
+      <p class="sg-section-desc">Input fields with focus and error states. 10px border-radius, 1px border.</p>
+
+      <div class="sg-grid-2">
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex-col">
+              <div>
+                <label class="input-label">Name</label>
+                <input class="input" type="text" placeholder="Paul Smith">
+              </div>
+              <div>
+                <label class="input-label">Email</label>
+                <input class="input" type="email" placeholder="hello@paulsmith.com">
+                <div class="input-hint">We'll never share your email.</div>
+              </div>
+              <div>
+                <label class="input-label">Email (error)</label>
+                <input class="input input-error" type="email" value="not-an-email">
+                <div class="input-error-msg">Please enter a valid email address.</div>
+              </div>
+              <div>
+                <label class="input-label">Disabled</label>
+                <input class="input" type="text" placeholder="Disabled field" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sg-card">
+          <div class="sg-card-body">
+            <div class="sg-flex-col">
+              <div>
+                <label class="input-label">Message</label>
+                <textarea class="textarea" placeholder="Tell me about your project..."></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="sg-card-footer">Focus: border shifts to white 50% · Error: border #f87171 · Disabled: 40% opacity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AVATARS -->
+    <div class="sg-section">
+      <div class="sg-section-label">Atoms</div>
+      <h2 class="sg-section-title">Avatars &amp; Dividers</h2>
+
+      <div class="sg-card">
+        <div class="sg-card-body">
+          <div class="sg-flex" style="gap:20px;align-items:center">
+            <div style="text-align:center"><div class="avatar avatar-sm"></div><div style="font-family:var(--font-mono);font-size:11px;color:var(--gray);margin-top:6px">32px</div></div>
+            <div style="text-align:center"><div class="avatar avatar-md"></div><div style="font-family:var(--font-mono);font-size:11px;color:var(--gray);margin-top:6px">40px</div></div>
+            <div style="text-align:center"><div class="avatar avatar-lg"></div><div style="font-family:var(--font-mono);font-size:11px;color:var(--gray);margin-top:6px">56px</div></div>
+            <div style="flex:1;margin-left:20px">
+              <div style="font-size:13px;font-weight:500;color:var(--white);margin-bottom:8px">Divider</div>
+              <div class="divider"></div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--gray);margin-top:6px">1px solid #333</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+         MOLECULES
+         ======================================== -->
+    <div id="molecules" class="sg-section">
+      <div class="sg-section-label">Molecules</div>
+      <h2 class="sg-section-title">Project Card</h2>
+      <p class="sg-section-desc">Used in the portfolio grid. Hover lifts the card and lightens the border.</p>
+
+      <div class="sg-grid-2">
+        <a href="#" class="project-card">
+          <div class="project-card-img"></div>
+          <div class="project-card-body">
+            <div class="project-card-row">
+              <span class="project-card-title">Logoipsum Mobile App</span>
+              <span class="project-card-year">2024</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="project-card">
+          <div class="project-card-img" style="background:linear-gradient(135deg,#1e3a2f,#0d2818)"></div>
+          <div class="project-card-body">
+            <div class="project-card-row">
+              <span class="project-card-title">Logo Landing Page</span>
+              <span class="project-card-year">2023</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- STAT + FEATURE CARDS -->
+    <div class="sg-section">
+      <div class="sg-section-label">Molecules</div>
+      <h2 class="sg-section-title">Stat &amp; Feature Cards</h2>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Stat Cards</div>
+        <div class="sg-grid-4">
+          <div class="stat-card"><div class="stat-value">8+</div><div class="stat-label">Years of experience</div></div>
+          <div class="stat-card"><div class="stat-value">20+</div><div class="stat-label">Clients</div></div>
+          <div class="stat-card"><div class="stat-value">40+</div><div class="stat-label">Projects Completed</div></div>
+          <div class="stat-card"><div class="stat-value">10,000+</div><div class="stat-label">Hours of Designing</div></div>
+        </div>
+      </div>
+
+      <div class="sg-sub">
+        <div class="sg-sub-title">Feature Cards</div>
+        <div class="sg-grid-3">
+          <div class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <div class="feature-title">Efficient Workflow</div>
+            <div class="feature-desc">Streamlined design process for rapid delivery without compromising quality.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="feature-title">Collaborative Process</div>
+            <div class="feature-desc">I work closely with you, integrating your feedback at every stage.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="feature-title">Attention to Detail</div>
+            <div class="feature-desc">Meticulous attention to every element for a polished final product.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIAL -->
+    <div class="sg-section">
+      <div class="sg-section-label">Molecules</div>
+      <h2 class="sg-section-title">Testimonial Card</h2>
+
+      <div class="sg-grid-2">
+        <div class="testimonial-card">
+          <div class="testimonial-author">
+            <div class="avatar avatar-md"></div>
+            <div><div class="testimonial-name">Jake R.</div><div class="testimonial-role">Product Manager at TechWave</div></div>
+          </div>
+          <p class="testimonial-quote">Paul transformed our outdated website into a modern, intuitive platform. The process was seamless from start to finish.</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-author">
+            <div class="avatar avatar-md"></div>
+            <div><div class="testimonial-name">Lisa P.</div><div class="testimonial-role">CEO of GreenPath Solutions</div></div>
+          </div>
+          <p class="testimonial-quote">Working with Paul was a game changer! He quickly understood our vision and translated it into a sleek design.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE BLOCK + BLOCKQUOTE -->
+    <div class="sg-section">
+      <div class="sg-section-label">Molecules</div>
+      <h2 class="sg-section-title">Code Block &amp; Blockquote</h2>
+
+      <div class="sg-grid-2">
+        <div>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot code-dot-red"></div>
+              <div class="code-dot code-dot-yellow"></div>
+              <div class="code-dot code-dot-green"></div>
+            </div>
+            <div class="code-body">
+<pre><span class="kw">const</span> <span class="var">gestures</span> = [<span class="str">"tap"</span>, <span class="str">"swipe"</span>];
+
+<span class="var">gestures</span>.<span class="fn">forEach</span>(<span class="var">g</span> =>
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`Enabled: ${g}`</span>)
+);</pre>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="blockquote">
+            <p>"Intuitive design is the one that doesn't need instructions."</p>
+          </div>
+          <div style="margin-top:12px;font-family:var(--font-mono);font-size:11px;color:#555">2px left border white 25% · bg #0e0e0e · 20px italic text</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAREER ITEM -->
+    <div class="sg-section">
+      <div class="sg-section-label">Molecules</div>
+      <h2 class="sg-section-title">Career Item</h2>
+
+      <div class="sg-card">
+        <div class="sg-card-body" style="padding:0 32px">
+          <div class="career-item">
+            <div><div class="career-role">Product Designer at Spotify</div><div class="career-dates">2020 - 2022</div></div>
+            <div class="career-desc">At Spotify, I helped shape innovative features for millions of users globally. My focus was on creating seamless music discovery experiences.</div>
+          </div>
+          <div class="career-item" style="border-bottom:1px solid var(--border)">
+            <div><div class="career-role">Freelance Product Designer</div><div class="career-dates">2022 - Now</div></div>
+            <div class="career-desc">Now I design user-centric products that align with client visions, crafting solutions that elevate user experiences.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================
+         ORGANISMS
+         ======================================== -->
+    <div id="organisms" class="sg-section">
+      <div class="sg-section-label">Organisms</div>
+      <h2 class="sg-section-title">Header</h2>
+      <p class="sg-section-desc">Fixed top navigation with avatar, name, page links, and ghost CTA button.</p>
+
+      <div class="org-header">
+        <div class="org-header-logo">
+          <div class="avatar avatar-sm"></div>
+          <span class="org-header-name">Paul Smith</span>
+        </div>
+        <div class="org-header-nav">
+          <a href="#">Portfolio</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#" class="btn btn-ghost btn-sm">Get template</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER ORGANISM -->
+    <div class="sg-section">
+      <div class="sg-section-label">Organisms</div>
+      <h2 class="sg-section-title">Footer</h2>
+      <p class="sg-section-desc">Two-column footer with brand info, page links, and social links.</p>
+
+      <div class="org-footer">
+        <div class="org-footer-inner">
+          <div>
+            <div class="org-footer-brand">Paul Smith</div>
+            <p class="org-footer-desc">Product designer crafting clean &amp; modern designs</p>
+          </div>
+          <div class="org-footer-right">
+            <div class="org-footer-col">
+              <div class="org-footer-col-title">Pages</div>
+              <a href="#">Portfolio</a>
+              <a href="#">About</a>
+              <a href="#">Contact me</a>
+            </div>
+            <div class="org-footer-col">
+              <div class="org-footer-col-title">Social</div>
+              <a href="#">Twitter</a>
+              <a href="#">LinkedIn</a>
+              <a href="#">Behance</a>
+            </div>
+          </div>
+        </div>
+        <div class="org-footer-bottom">&copy; 2025 Proxio Template</div>
+      </div>
+    </div>
+
+    <!-- ANIMATION REFERENCE -->
+    <div class="sg-section">
+      <div class="sg-section-label">Organisms</div>
+      <h2 class="sg-section-title">Animation Reference</h2>
+      <p class="sg-section-desc">All transitions use the same easing curve. Scroll-triggered elements fade up 40px.</p>
+
+      <div class="sg-card">
+        <div class="sg-card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:8px">Easing</div>
+              <div style="font-family:var(--font-mono);font-size:12px;color:var(--gray);line-height:1.8">
+                cubic-bezier(0.12, 0.23, 0.5, 1)<br>
+                Duration: 0.3s (UI)<br>
+                Duration: 0.6s (scroll reveal)
+              </div>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:8px">Scroll Reveal</div>
+              <div style="font-family:var(--font-mono);font-size:12px;color:var(--gray);line-height:1.8">
+                opacity: 0 → 1<br>
+                translateY: 40px → 0<br>
+                threshold: 15%
+              </div>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:8px">Hover States</div>
+              <div style="font-family:var(--font-mono);font-size:12px;color:var(--gray);line-height:1.8">
+                Cards: translateY(-4px) + border #555<br>
+                Buttons: opacity 0.85 / active scale(0.97)<br>
+                Links: color → #999
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

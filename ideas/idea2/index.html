@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luna — Portfolio Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Colors */
+      --color-white: #ffffff;
+      --color-off-white: #fafafa;
+      --color-black: #000000;
+      --color-dark: #050505;
+      --color-blue: #002fff;
+      --color-lime: #eaff86;
+      --color-pink: #fcd1ff;
+      --color-light-pink: rgb(255, 235, 252);
+      --color-footer-lime: rgb(234, 255, 134);
+      --color-purple: #7d45ff;
+      --color-light-blue: #d1e8ff;
+
+      /* Typography */
+      --font-display: 'Instrument Serif', serif;
+      --font-accent: 'Bricolage Grotesque', sans-serif;
+      --font-body: 'Inter', sans-serif;
+
+      /* Type Scale */
+      --text-xs: 12px;
+      --text-sm: 14px;
+      --text-base: 16px;
+      --text-md: 18px;
+      --text-lg: 20px;
+      --text-xl: 24px;
+      --text-2xl: 28px;
+      --text-3xl: 32px;
+      --text-4xl: 40px;
+      --text-5xl: 64px;
+      --text-6xl: 96px;
+      --text-hero: 112px;
+
+      /* Spacing */
+      --space-0: 0px;
+      --space-1: 4px;
+      --space-2: 10px;
+      --space-3: 12px;
+      --space-4: 20px;
+      --space-5: 24px;
+      --space-6: 40px;
+      --space-7: 80px;
+      --space-8: 120px;
+      --space-9: 240px;
+
+      /* Border Radius */
+      --radius-md: 24px;
+      --radius-pill: 79px;
+      --radius-full: 999px;
+
+      /* Shadows */
+      --shadow-card: 0px 0.6px 1.5px -1.5px rgba(0,0,0,0.17),
+                      0px 2.3px 6px -3px rgba(0,0,0,0.14),
+                      0px 10px 26px -4.5px rgba(0,0,0,0.02);
+      --shadow-border: inset 0px 0px 0px 1px rgb(0,0,0);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-dark);
+      background: var(--color-white);
+      line-height: 1.4em;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Skip Link */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      background: var(--color-blue);
+      color: var(--color-white);
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      z-index: 1000;
+      font-weight: 500;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* Floating Nav */
+    .site-nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      animation: navSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+    }
+
+    @keyframes navSlideIn {
+      to { transform: translateX(-50%) translateY(0); }
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+    }
+    .nav-logo svg {
+      width: 20px;
+      height: 18px;
+      color: var(--color-dark);
+    }
+
+    .nav-link {
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-blue);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .nav-link:hover {
+      background: rgba(0, 47, 255, 0.08);
+    }
+    .nav-link[aria-current="page"] {
+      background: rgba(0, 47, 255, 0.08);
+    }
+
+    .nav-cta {
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-blue);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .nav-cta:hover {
+      background: rgba(0, 47, 255, 0.08);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: var(--space-8) var(--space-6);
+      overflow: hidden;
+    }
+
+    .hero-text {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: var(--text-hero);
+      line-height: 0.85em;
+      letter-spacing: -1px;
+      color: var(--color-blue);
+    }
+
+    .hero-text h1 strong {
+      font-family: var(--font-body);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .hero-greeting {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-4xl);
+      color: var(--color-blue);
+      margin-bottom: var(--space-4);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-3xl);
+      color: var(--color-dark);
+      margin-top: var(--space-5);
+      line-height: 1.2em;
+    }
+
+    /* Floating images in hero */
+    .hero-float {
+      position: absolute;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      cursor: grab;
+      transition: transform 0.4s ease;
+      overflow: hidden;
+    }
+    .hero-float:hover { transform: scale(1.04) rotate(-1deg); }
+
+    .hero-float img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-float-1 {
+      width: 200px; height: 260px;
+      top: 15%; left: 5%;
+      z-index: 1;
+    }
+    .hero-float-2 {
+      width: 180px; height: 180px;
+      top: 10%; right: 8%;
+      z-index: 1;
+    }
+    .hero-float-3 {
+      width: 160px; height: 220px;
+      bottom: 15%; left: 8%;
+      z-index: 1;
+    }
+    .hero-float-4 {
+      width: 220px; height: 160px;
+      bottom: 20%; right: 5%;
+      z-index: 1;
+    }
+    .hero-float-5 {
+      width: 140px; height: 140px;
+      top: 50%; right: 20%;
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    /* Projects Section */
+    .projects {
+      padding: var(--space-7) var(--space-6);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      display: block;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .project-card-img {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .project-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover img { transform: scale(1.03); }
+
+    .project-card-title {
+      font-size: var(--text-sm);
+      color: var(--color-dark);
+      margin-top: var(--space-2);
+    }
+
+    /* Tall card variants */
+    .project-card.tall { grid-row: span 2; }
+    .project-card.tall img { aspect-ratio: 0.68; }
+
+    .project-card.wide img { aspect-ratio: 1.78; }
+
+    /* Services Section */
+    .services {
+      padding: var(--space-8) var(--space-6);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .services-heading {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-4xl);
+      color: var(--color-dark);
+      margin-bottom: var(--space-6);
+    }
+
+    .services-list {
+      list-style: none;
+      border-top: 1px solid var(--color-dark);
+    }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: 16px 0;
+      border-bottom: 1px solid var(--color-dark);
+      font-size: var(--text-base);
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .service-item:hover {
+      color: var(--color-blue);
+    }
+
+    .service-item::before {
+      content: '+';
+      font-size: var(--text-lg);
+      font-weight: 300;
+      flex-shrink: 0;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: var(--space-7) var(--space-6);
+      text-align: center;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: var(--color-white);
+      color: var(--color-dark);
+      padding: 14px 36px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-dark);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .cta-button:hover {
+      background: var(--color-dark);
+      color: var(--color-white);
+      transform: scale(1.04);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--color-footer-lime);
+      padding: var(--space-6) var(--space-6) var(--space-5);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+    }
+
+    .footer-brand-logo svg {
+      width: 24px;
+      height: 22px;
+      color: var(--color-dark);
+    }
+
+    .footer-copy {
+      font-size: var(--text-sm);
+      color: rgba(5,5,5,0.5);
+      margin-top: var(--space-2);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-6);
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .footer-col a {
+      font-size: var(--text-sm);
+      color: var(--color-dark);
+      transition: color 0.2s ease;
+    }
+    .footer-col a:hover { color: #09f; }
+
+    /* Scroll animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-children .fade-up:nth-child(1) { transition-delay: 0ms; }
+    .stagger-children .fade-up:nth-child(2) { transition-delay: 100ms; }
+    .stagger-children .fade-up:nth-child(3) { transition-delay: 200ms; }
+    .stagger-children .fade-up:nth-child(4) { transition-delay: 300ms; }
+    .stagger-children .fade-up:nth-child(5) { transition-delay: 400ms; }
+    .stagger-children .fade-up:nth-child(6) { transition-delay: 500ms; }
+
+    /* Responsive */
+    @media (max-width: 1199px) {
+      .hero-text h1 { font-size: var(--text-6xl); }
+      .hero-float-1 { width: 160px; height: 210px; }
+      .hero-float-2 { width: 140px; height: 140px; }
+      .hero-float-3 { width: 130px; height: 180px; }
+      .hero-float-4 { width: 180px; height: 130px; }
+      .hero-float-5 { display: none; }
+    }
+
+    @media (max-width: 809px) {
+      .hero-text h1 { font-size: var(--text-5xl); }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.tall { grid-row: span 1; }
+      .project-card.tall img { aspect-ratio: 1; }
+      .hero-float { display: none; }
+      .footer-inner { flex-direction: column; gap: var(--space-5); }
+      .footer-links { gap: var(--space-5); }
+    }
+
+    @media (max-width: 480px) {
+      .hero-text h1 { font-size: 48px; }
+      .hero-subtitle { font-size: var(--text-xl); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Luna home">
+      <svg viewBox="0 0 35 32" xmlns="http://www.w3.org/2000/svg"><path d="M 16.312 0 C 21.633 0.022 19.208 10.067 19.208 10.067 C 19.208 10.067 31.686 1.209 32.052 10.121 C 32.418 19.032 20.47 17.872 20.47 17.872 C 20.47 17.872 31.456 24.923 24.81 26.694 C 18.163 28.466 14.97 20.692 14.97 20.692 C 14.97 20.692 10.726 29.71 6.434 27.206 C 2.142 24.702 9.596 16.985 9.596 16.985 C 9.596 16.985 -2.964 18.217 0.655 9.989 C 4.275 1.761 14.216 10.864 14.216 10.864 C 14.216 10.864 10.992 -0.022 16.312 0 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.341 3.419) rotate(510 16.03 13.822)"/></svg>
+    </a>
+    <a href="index.html" class="nav-link" aria-current="page">Projects</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="#contact" class="nav-cta">Contact</a>
+  </nav>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-label="Introduction">
+      <div class="hero-float hero-float-1 fade-up">
+        <img src="https://framerusercontent.com/images/SlokxIhskXCQJeMpIPHRS9Ji0.jpg?width=400&height=400" alt="Bloom & Brew project">
+      </div>
+      <div class="hero-float hero-float-2 fade-up">
+        <img src="https://framerusercontent.com/images/lLzPNLHFR9qe5yJr8rIFqkP6Cs.jpg?width=400&height=590" alt="Zesty Soda project">
+      </div>
+      <div class="hero-float hero-float-3 fade-up">
+        <img src="https://framerusercontent.com/images/0oBQo4TEd6mS5C38AnL84itaE.jpg?width=400&height=283" alt="Oishi Mochi project">
+      </div>
+      <div class="hero-float hero-float-4 fade-up">
+        <img src="https://framerusercontent.com/images/YAY6BEB6HYYMPSDibDyynfoi2jk.jpg?width=400&height=400" alt="Skin theory project">
+      </div>
+      <div class="hero-float hero-float-5 fade-up">
+        <img src="https://framerusercontent.com/images/KJCySM1KZe8TOsHtgjD61Uv0Y.jpg?width=400&height=563" alt="Lit & Co project">
+      </div>
+      <div class="hero-text fade-up">
+        <span class="hero-greeting">Hi,</span>
+        <h1>I'm Luna Rae</h1>
+        <p class="hero-subtitle">a designer specializing in<br><em>branding</em> &amp; <em>illustration.</em></p>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" aria-label="Selected work">
+      <div class="projects-grid stagger-children">
+        <a href="project.html" class="project-card fade-up">
+          <div class="project-card-img">
+            <img src="https://framerusercontent.com/images/SlokxIhskXCQJeMpIPHRS9Ji0.jpg?width=800&height=800" alt="Bloom & Brew branding project">
+          </div>
+          <span class="project-card-title">Bloom &amp; Brew</span>
+        </a>
+        <a href="project.html" class="project-card tall fade-up">
+          <div class="project-card-img">
+            <img src="https://framerusercontent.com/images/lLzPNLHFR9qe5yJr8rIFqkP6Cs.jpg?width=800&height=1180" alt="Zesty Soda branding project">
+          </div>
+          <span class="project-card-title">Zesty Soda</span>
+        </a>
+        <a href="project.html" class="project-card fade-up">
+          <div class="project-card-img">
+            <img src="https://framerusercontent.com/images/0oBQo4TEd6mS5C38AnL84itaE.jpg?width=800&height=565" alt="Oishi Mochi packaging project">
+          </div>
+          <span class="project-card-title">Oishi Mochi</span>
+        </a>
+        <a href="project.html" class="project-card fade-up">
+          <div class="project-card-img">
+            <img src="https://framerusercontent.com/images/YAY6BEB6HYYMPSDibDyynfoi2jk.jpg?width=800&height=800" alt="Skin theory skincare branding">
+          </div>
+          <span class="project-card-title">Skin theory</span>
+        </a>
+        <a href="project.html" class="project-card tall fade-up">
+          <div class="project-card-img">
+            <img src="https://framerusercontent.com/images/KJCySM1KZe8TOsHtgjD61Uv0Y.jpg?width=800&height=1124" alt="Lit & Co bookstore branding">
+          </div>
+          <span class="project-card-title">Lit &amp; Co</span>
+        </a>
+        <a href="project.html" class="project-card fade-up">
+          <div class="project-card-img">
+            <img src="https://framerusercontent.com/images/VgpfMINIm8nz40SLVVxpoCLiGyw.jpg?width=800&height=450" alt="Amber Atelier branding project">
+          </div>
+          <span class="project-card-title">Amber Atelier</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services fade-up" aria-label="Services">
+      <h2 class="services-heading">My Services</h2>
+      <ul class="services-list">
+        <li class="service-item">Branding</li>
+        <li class="service-item">Strategy</li>
+        <li class="service-item">Web design</li>
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta fade-up" id="contact" aria-label="Contact">
+      <a href="#" class="cta-button">Get in touch</a>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="footer-brand-logo" aria-label="Luna home">
+          <svg viewBox="0 0 35 32" xmlns="http://www.w3.org/2000/svg"><path d="M 16.312 0 C 21.633 0.022 19.208 10.067 19.208 10.067 C 19.208 10.067 31.686 1.209 32.052 10.121 C 32.418 19.032 20.47 17.872 20.47 17.872 C 20.47 17.872 31.456 24.923 24.81 26.694 C 18.163 28.466 14.97 20.692 14.97 20.692 C 14.97 20.692 10.726 29.71 6.434 27.206 C 2.142 24.702 9.596 16.985 9.596 16.985 C 9.596 16.985 -2.964 18.217 0.655 9.989 C 4.275 1.761 14.216 10.864 14.216 10.864 C 14.216 10.864 10.992 -0.022 16.312 0 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.341 3.419) rotate(510 16.03 13.822)"/></svg>
+        </a>
+        <p class="footer-copy">&copy;2025 Luna</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+          <a href="#">Framer</a>
+        </div>
+        <div class="footer-col">
+          <a href="index.html">Projects</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="footer-col">
+          <a href="#contact">Let's talk</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-up animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Nav hide on scroll down
+    let lastScroll = 0;
+    const siteNav = document.querySelector('.site-nav');
+    window.addEventListener('scroll', () => {
+      const current = window.scrollY;
+      if (current > lastScroll && current > 200) {
+        siteNav.style.opacity = '0';
+        siteNav.style.pointerEvents = 'none';
+      } else {
+        siteNav.style.opacity = '1';
+        siteNav.style.pointerEvents = 'auto';
+      }
+      lastScroll = current;
+    }, { passive: true });
+  </script>
+</body>
+</html>

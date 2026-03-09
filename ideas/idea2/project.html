@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloom & Brew — Luna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-white: #ffffff;
+      --color-off-white: #fafafa;
+      --color-black: #000000;
+      --color-dark: #050505;
+      --color-blue: #002fff;
+      --color-lime: #eaff86;
+      --color-pink: #fcd1ff;
+      --color-light-pink: rgb(255, 235, 252);
+      --color-purple: #7d45ff;
+      --color-light-blue: #d1e8ff;
+      --font-display: 'Instrument Serif', serif;
+      --font-accent: 'Bricolage Grotesque', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --text-xs: 12px; --text-sm: 14px; --text-base: 16px; --text-md: 18px;
+      --text-lg: 20px; --text-xl: 24px; --text-2xl: 28px; --text-3xl: 32px;
+      --text-4xl: 40px; --text-5xl: 64px; --text-6xl: 96px; --text-hero: 112px;
+      --space-3: 12px; --space-4: 20px; --space-5: 24px; --space-6: 40px;
+      --space-7: 80px; --space-8: 120px;
+      --radius-md: 24px; --radius-pill: 79px; --radius-full: 999px;
+      --shadow-card: 0px 0.6px 1.5px -1.5px rgba(0,0,0,0.17),
+                      0px 2.3px 6px -3px rgba(0,0,0,0.14),
+                      0px 10px 26px -4.5px rgba(0,0,0,0.02);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-dark);
+      background: var(--color-white);
+      line-height: 1.4em;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .skip-link {
+      position: absolute; top: -100%; left: 16px;
+      background: var(--color-blue); color: var(--color-white);
+      padding: 12px 24px; border-radius: var(--radius-pill);
+      z-index: 1000; font-weight: 500;
+    }
+    .skip-link:focus { top: 16px; }
+
+    /* Floating Nav */
+    .site-nav {
+      position: fixed; top: 20px; left: 50%;
+      transform: translateX(-50%) translateY(-150px);
+      z-index: 100; display: flex; align-items: center; gap: var(--space-3);
+      padding: 8px 12px; background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      animation: navSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+    }
+    @keyframes navSlideIn {
+      to { transform: translateX(-50%) translateY(0); }
+    }
+    .nav-logo { display: flex; align-items: center; padding: 6px 10px; }
+    .nav-logo svg { width: 20px; height: 18px; color: var(--color-dark); }
+    .nav-link {
+      padding: 8px 18px; border-radius: var(--radius-pill);
+      font-size: var(--text-sm); font-weight: 500; color: var(--color-blue);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .nav-link:hover { background: rgba(0, 47, 255, 0.08); }
+    .nav-link[aria-current="page"] { background: rgba(0, 47, 255, 0.08); }
+    .nav-cta {
+      padding: 8px 18px; border-radius: var(--radius-pill);
+      font-size: var(--text-sm); font-weight: 500; color: var(--color-blue);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .nav-cta:hover { background: rgba(0, 47, 255, 0.08); }
+
+    /* Project Detail */
+    .project-hero {
+      padding: var(--space-8) var(--space-6) var(--space-6);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-hero);
+      line-height: 0.85em;
+      letter-spacing: -1px;
+      color: var(--color-blue);
+      margin-bottom: var(--space-5);
+    }
+
+    .project-tags {
+      display: flex;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+    }
+
+    .tag {
+      padding: 8px 20px;
+      border: 1px solid var(--color-dark);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: 500;
+    }
+
+    .project-description {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-xl);
+      line-height: 1.4em;
+      color: var(--color-blue);
+      max-width: 700px;
+    }
+
+    /* Project Images */
+    .project-images {
+      padding: 0 var(--space-6) var(--space-7);
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .project-images img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+    }
+
+    .project-images-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    /* Next Project */
+    .next-project {
+      padding: var(--space-7) var(--space-6);
+      text-align: center;
+    }
+
+    .next-project-label {
+      font-size: var(--text-sm);
+      color: rgba(5,5,5,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-4);
+    }
+
+    .next-project-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-5xl);
+      line-height: 0.85em;
+      letter-spacing: -1px;
+      color: var(--color-blue);
+      transition: opacity 0.2s ease;
+    }
+    .next-project-title:hover { opacity: 0.7; }
+
+    /* Footer */
+    footer {
+      background: rgb(234, 255, 134);
+      padding: var(--space-6) var(--space-6) var(--space-5);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: var(--space-6);
+    }
+    .footer-brand-logo svg { width: 24px; height: 22px; color: var(--color-dark); }
+    .footer-copy { font-size: var(--text-sm); color: rgba(5,5,5,0.5); margin-top: 10px; }
+    .footer-links { display: flex; gap: var(--space-6); }
+    .footer-col { display: flex; flex-direction: column; gap: var(--space-3); }
+    .footer-col a {
+      font-size: var(--text-sm); color: var(--color-dark);
+      transition: color 0.2s ease;
+    }
+    .footer-col a:hover { color: #09f; }
+
+    .fade-up {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    .stagger-children .fade-up:nth-child(1) { transition-delay: 0ms; }
+    .stagger-children .fade-up:nth-child(2) { transition-delay: 100ms; }
+    .stagger-children .fade-up:nth-child(3) { transition-delay: 200ms; }
+    .stagger-children .fade-up:nth-child(4) { transition-delay: 300ms; }
+    .stagger-children .fade-up:nth-child(5) { transition-delay: 400ms; }
+
+    @media (max-width: 809px) {
+      .project-title { font-size: var(--text-5xl); }
+      .project-images-row { grid-template-columns: 1fr; }
+      .next-project-title { font-size: var(--text-4xl); }
+      .footer-inner { flex-direction: column; gap: var(--space-5); }
+    }
+
+    @media (max-width: 480px) {
+      .project-title { font-size: 48px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="Luna home">
+      <svg viewBox="0 0 35 32" xmlns="http://www.w3.org/2000/svg"><path d="M 16.312 0 C 21.633 0.022 19.208 10.067 19.208 10.067 C 19.208 10.067 31.686 1.209 32.052 10.121 C 32.418 19.032 20.47 17.872 20.47 17.872 C 20.47 17.872 31.456 24.923 24.81 26.694 C 18.163 28.466 14.97 20.692 14.97 20.692 C 14.97 20.692 10.726 29.71 6.434 27.206 C 2.142 24.702 9.596 16.985 9.596 16.985 C 9.596 16.985 -2.964 18.217 0.655 9.989 C 4.275 1.761 14.216 10.864 14.216 10.864 C 14.216 10.864 10.992 -0.022 16.312 0 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.341 3.419) rotate(510 16.03 13.822)"/></svg>
+    </a>
+    <a href="index.html" class="nav-link">Projects</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="#" class="nav-cta">Contact</a>
+  </nav>
+
+  <main id="main">
+    <section class="project-hero fade-up" aria-label="Project details">
+      <h1 class="project-title">Bloom &amp; Brew</h1>
+      <div class="project-tags">
+        <span class="tag">Branding</span>
+        <span class="tag">Illustration</span>
+      </div>
+      <p class="project-description">Bloom &amp; Brew is a vibrant coffee shop brand built around bold red tones and playful custom illustrations. The identity combines energetic visuals with a modern, welcoming feel, aiming to create a memorable experience that stands out in an urban caf&eacute; landscape.</p>
+    </section>
+
+    <div class="project-images stagger-children">
+      <img src="https://framerusercontent.com/images/wVRv0Ae3ZS5MRGI6NoDTnMH5WVo.jpg?width=1200&height=854" alt="Bloom & Brew hero image" class="fade-up">
+      <div class="project-images-row">
+        <img src="https://framerusercontent.com/images/pPcbvhX1pwz0UQcYwZdw6PxbvM.jpg?width=600&height=600" alt="Bloom & Brew logo mark" class="fade-up">
+        <img src="https://framerusercontent.com/images/0zerAVSWB76FH2XhjIavAV3zEHk.jpg?width=600&height=600" alt="Bloom & Brew packaging" class="fade-up">
+      </div>
+      <img src="https://framerusercontent.com/images/2clTUKNlD9AKQdcN5055PtJ2KI.jpg?width=1200&height=675" alt="Bloom & Brew brand application" class="fade-up">
+      <img src="https://framerusercontent.com/images/b4JFRStG5cWq5a7IFW90SzXbO9M.jpg?width=1200&height=800" alt="Bloom & Brew storefront" class="fade-up">
+    </div>
+
+    <section class="next-project fade-up">
+      <p class="next-project-label">Next project</p>
+      <a href="#" class="next-project-title">Zesty Soda</a>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div>
+        <a href="index.html" class="footer-brand-logo" aria-label="Luna home">
+          <svg viewBox="0 0 35 32" xmlns="http://www.w3.org/2000/svg"><path d="M 16.312 0 C 21.633 0.022 19.208 10.067 19.208 10.067 C 19.208 10.067 31.686 1.209 32.052 10.121 C 32.418 19.032 20.47 17.872 20.47 17.872 C 20.47 17.872 31.456 24.923 24.81 26.694 C 18.163 28.466 14.97 20.692 14.97 20.692 C 14.97 20.692 10.726 29.71 6.434 27.206 C 2.142 24.702 9.596 16.985 9.596 16.985 C 9.596 16.985 -2.964 18.217 0.655 9.989 C 4.275 1.761 14.216 10.864 14.216 10.864 C 14.216 10.864 10.992 -0.022 16.312 0 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.341 3.419) rotate(510 16.03 13.822)"/></svg>
+        </a>
+        <p class="footer-copy">&copy;2025 Luna</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+          <a href="#">Framer</a>
+        </div>
+        <div class="footer-col">
+          <a href="index.html">Projects</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="footer-col">
+          <a href="#">Let's talk</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    let lastScroll = 0;
+    const siteNav = document.querySelector('.site-nav');
+    window.addEventListener('scroll', () => {
+      const current = window.scrollY;
+      if (current > lastScroll && current > 200) {
+        siteNav.style.opacity = '0';
+        siteNav.style.pointerEvents = 'none';
+      } else {
+        siteNav.style.opacity = '1';
+        siteNav.style.pointerEvents = 'auto';
+      }
+      lastScroll = current;
+    }, { passive: true });
+  </script>
+</body>
+</html>

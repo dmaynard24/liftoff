@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logoipsum Mobile App - Proxio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@300;400;500;600;700;900&family=Manrope:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       RESET & TOKENS (shared with index)
+       ============================================= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000;
+      --bg-dark: #0e0e0e;
+      --bg-card: #1e1e1e;
+      --bg-hero: #111;
+      --bg-code: #131313;
+      --border: #333;
+      --white: #fff;
+      --gray: #999;
+      --blue: #09f;
+      --white-5: rgba(255, 255, 255, 0.05);
+      --white-25: rgba(255, 255, 255, 0.25);
+      --white-50: rgba(255, 255, 255, 0.5);
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'Fragment Mono', monospace;
+      --max-width: 1200px;
+      --content-width: 800px;
+      --transition: 0.3s cubic-bezier(0.12, 0.23, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--white);
+      background: var(--black);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* =============================================
+       HEADER (identical to index)
+       ============================================= */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--black);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      overflow: hidden;
+    }
+
+    .header-avatar-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #444, #222);
+      border-radius: 50%;
+    }
+
+    .header-name {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: var(--white);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .header-nav a {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: var(--white);
+      transition: color var(--transition);
+    }
+
+    .header-nav a:hover { color: var(--gray); }
+
+    .header-nav .btn-template {
+      padding: 8px 20px;
+      border: 1px solid var(--white-25);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .header-nav .btn-template:hover {
+      background: var(--white-5);
+      border-color: var(--white-50);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+    }
+
+    /* =============================================
+       PROJECT HERO
+       ============================================= */
+    .project-hero {
+      padding: 140px 40px 80px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .project-breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 32px;
+    }
+
+    .project-title {
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .project-description {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--gray);
+      max-width: 640px;
+      margin-bottom: 40px;
+    }
+
+    /* Meta row */
+    .project-meta {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meta-tag {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      background: var(--bg-card);
+    }
+
+    .meta-text {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .visit-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border: 1px solid var(--white-25);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .visit-link:hover {
+      background: var(--white-5);
+      border-color: var(--white-50);
+    }
+
+    .visit-link svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* =============================================
+       PROJECT HERO IMAGE
+       ============================================= */
+    .project-hero-img {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto 80px;
+      padding: 0 40px;
+    }
+
+    .project-hero-img-inner {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* =============================================
+       PROJECT CONTENT
+       ============================================= */
+    .project-content {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 40px 80px;
+    }
+
+    .content-section {
+      margin-bottom: 64px;
+    }
+
+    .content-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    .content-body {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--gray);
+    }
+
+    .content-body strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .content-body a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    .content-body a:hover {
+      color: var(--white);
+    }
+
+    /* Bullet list */
+    .content-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .content-list li {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--gray);
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .content-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .content-list li strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* Blockquote */
+    .blockquote {
+      margin: 64px 0;
+      padding: 40px;
+      border-left: 2px solid var(--white-25);
+      background: var(--bg-dark);
+      border-radius: 0 16px 16px 0;
+    }
+
+    .blockquote p {
+      font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    /* Code block */
+    .code-block {
+      margin: 48px 0;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .code-dot-red { background: #ff5f57; }
+    .code-dot-yellow { background: #febc2e; }
+    .code-dot-green { background: #28c840; }
+
+    .code-body {
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .code-body pre {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    .code-body .keyword { color: #c678dd; }
+    .code-body .variable { color: #e06c75; }
+    .code-body .string { color: #98c379; }
+    .code-body .bracket { color: #e5c07b; }
+    .code-body .method { color: #61afef; }
+    .code-body .comment { color: #5c6370; font-style: italic; }
+    .code-body .arrow { color: #56b6c2; }
+    .code-body .template { color: #98c379; }
+
+    /* Inline image */
+    .content-image {
+      width: 100%;
+      margin: 48px 0;
+    }
+
+    .content-image-inner {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #16213e, #1a1a2e);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* Closing line */
+    .content-closing {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--gray);
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .content-closing strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* =============================================
+       CTA (shared with index)
+       ============================================= */
+    .cta-section {
+      padding: 140px 40px;
+      text-align: center;
+    }
+
+    .cta-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    .cta-title {
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .cta-title em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity var(--transition);
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-secondary {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: underline;
+      transition: color var(--transition);
+    }
+
+    .btn-secondary:hover { color: var(--white); }
+
+    /* =============================================
+       FOOTER (shared with index)
+       ============================================= */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 40px;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .footer-brand-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .footer-brand-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.5;
+      max-width: 280px;
+    }
+
+    .footer-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-col-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 2;
+      transition: color var(--transition);
+    }
+
+    .footer-col a:hover { color: var(--white); }
+
+    .footer-bottom {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding-top: 32px;
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .footer-copy a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+
+    /* =============================================
+       FADE-UP
+       ============================================= */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .fade-up { opacity: 1; transform: none; }
+    }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 1024px) {
+      .project-title { font-size: 48px; }
+      .cta-title { font-size: 48px; }
+    }
+
+    @media (max-width: 768px) {
+      .header { padding: 20px; }
+      .header-nav { display: none; }
+      .hamburger { display: flex; }
+
+      .project-hero { padding: 120px 20px 60px; }
+      .project-title { font-size: 36px; }
+      .project-description { font-size: 16px; }
+      .project-meta { gap: 16px; }
+      .project-hero-img { padding: 0 20px; }
+
+      .project-content { padding: 0 20px 60px; }
+      .content-body { font-size: 16px; }
+      .content-list li { font-size: 16px; }
+      .blockquote { padding: 24px; }
+      .blockquote p { font-size: 18px; }
+
+      .cta-section { padding: 80px 20px; }
+      .cta-title { font-size: 36px; }
+      .cta-buttons { flex-direction: column; }
+
+      .footer { padding: 40px 20px; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="header-logo">
+      <div class="header-avatar"><div class="header-avatar-placeholder"></div></div>
+      <span class="header-name">Paul Smith</span>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="index.html#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#" class="btn-template">Get template</a>
+    </nav>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- PROJECT HERO -->
+  <section class="project-hero">
+    <div class="project-breadcrumb fade-up">Project detail</div>
+    <h1 class="project-title fade-up">Logoipsum Mobile App</h1>
+    <p class="project-description fade-up">An intuitive, mobile-friendly design for an iPhone app focused on enhancing user productivity through sleek interfaces and seamless interactions.</p>
+
+    <div class="project-meta fade-up">
+      <span class="meta-tag">Web Design</span>
+      <span class="meta-text">2 months</span>
+      <span class="meta-text">Skype</span>
+      <a href="#" class="visit-link">
+        Visit Project
+        <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- HERO IMAGE -->
+  <div class="project-hero-img fade-up">
+    <div class="project-hero-img-inner">project hero image</div>
+  </div>
+
+  <!-- CONTENT -->
+  <article class="project-content">
+
+    <!-- Overview -->
+    <section class="content-section fade-up">
+      <div class="content-label">Overview</div>
+      <p class="content-body">This project showcases a <strong>modern mobile application</strong> designed to boost productivity. The interface follows iOS design principles while introducing custom interaction patterns and smooth micro-animations.</p>
+    </section>
+
+    <!-- Inline image -->
+    <div class="content-image fade-up">
+      <div class="content-image-inner">project detail image</div>
+    </div>
+
+    <!-- Core Concepts -->
+    <section class="content-section fade-up">
+      <div class="content-label">Core Concepts</div>
+      <ul class="content-list">
+        <li><strong>Minimal, distraction-free workflow</strong> for quick task execution</li>
+        <li>Fluid <strong>gesture-based control</strong>, optimized for one-handed use</li>
+        <li>Lightweight components built with <strong>performance</strong> in mind</li>
+      </ul>
+      <p class="content-body" style="margin-top:24px"><a href="#">More</a> about our prototyping approach.</p>
+    </section>
+
+    <!-- Blockquote -->
+    <div class="blockquote fade-up">
+      <p>"Intuitive design is the one that doesn't need instructions."</p>
+    </div>
+
+    <!-- Inline image -->
+    <div class="content-image fade-up">
+      <div class="content-image-inner">project detail image</div>
+    </div>
+
+    <!-- Development Notes -->
+    <section class="content-section fade-up">
+      <div class="content-label">Development Notes</div>
+      <p class="content-body" style="margin-bottom:24px">To fine-tune animations, we used a simple internal testing script:</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dot code-dot-red"></div>
+          <div class="code-dot code-dot-yellow"></div>
+          <div class="code-dot code-dot-green"></div>
+        </div>
+        <div class="code-body">
+<pre><span class="keyword">const</span> <span class="variable">gestures</span> = <span class="bracket">[</span><span class="string">"tap"</span>, <span class="string">"swipe"</span>, <span class="string">"longpress"</span><span class="bracket">]</span>;
+
+<span class="variable">gestures</span>.<span class="method">forEach</span>(<span class="variable">g</span> <span class="arrow">=></span>
+  <span class="variable">console</span>.<span class="method">log</span>(<span class="template">`Enabled: <span class="variable">${g}</span>`</span>)
+);</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inline image -->
+    <div class="content-image fade-up">
+      <div class="content-image-inner">project detail image</div>
+    </div>
+
+    <!-- Closing -->
+    <div class="content-closing fade-up">
+      <p><strong>The final result is a fast, elegant, user-centered mobile experience.</strong></p>
+    </div>
+
+  </article>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="cta-label fade-up">Contact</div>
+    <h2 class="cta-title fade-up">Let's Get in<br><em>Touch</em></h2>
+    <p class="cta-sub fade-up">Let's connect and start with your project.</p>
+    <div class="cta-buttons fade-up">
+      <a href="#" class="btn-primary">
+        Book a call
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+      <span style="color:var(--gray);font-size:14px">Or email <a href="#" class="btn-secondary">hello@paulsmith.com</a></span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Paul Smith</div>
+        <p class="footer-brand-desc">Product designer crafting clean &amp; modern designs</p>
+      </div>
+      <div class="footer-right">
+        <div class="footer-col">
+          <div class="footer-col-title">Pages</div>
+          <a href="index.html">Portfolio</a>
+          <a href="index.html#about">About</a>
+          <a href="#">Contact me</a>
+          <a href="#">Book a call</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Social</div>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Behance</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Proxio Template. Template created by <a href="#">Sebadam</a>. Built in <a href="#">Framer</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+    let lastScroll = 0;
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      const current = window.scrollY;
+      header.style.transform = current > 80 && current > lastScroll ? 'translateY(-100%)' : 'translateY(0)';
+      header.style.transition = 'transform 0.3s ease';
+      lastScroll = current;
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
