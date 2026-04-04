@@ -30,11 +30,7 @@ src/
 |----------|-------------|---------|
 | `VITE_API_URL` | Base URL of the API server | `""` (same origin) |
 
-For local development, create `apps/web/.env.local`:
-
-```bash
-VITE_API_URL=http://localhost:3000
-```
+In local development, `VITE_API_URL` can be left unset — the Vite dev server proxies all `/api/*` requests to `http://localhost:3000` automatically via the proxy config in `vite.config.ts`.
 
 In Netlify, set `VITE_API_URL=https://liftoff-api.fly.dev` in the site's environment variables.
 

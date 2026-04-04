@@ -66,9 +66,9 @@ app.get('/api/jobs/:id/styleguide', async (c) => {
   }
 });
 
-export default app;
-
 const port = parseInt(process.env.PORT ?? '3000', 10);
-console.log(`API listening on http://localhost:${port}`);
 
-Bun.serve({ fetch: app.fetch, port });
+export default {
+  fetch: app.fetch,
+  port,
+};

@@ -49,12 +49,7 @@ This starts:
 - API at `http://localhost:3000` (Bun + Hono)
 - Web at `http://localhost:5173` (Vite)
 
-The frontend proxies nothing — it calls the API directly. During local dev `VITE_API_URL` is unset, so it defaults to the same origin. Since they run on different ports locally, set it in `apps/web/.env.local`:
-
-```bash
-# apps/web/.env.local
-VITE_API_URL=http://localhost:3000
-```
+The Vite dev server proxies all `/api/*` requests to `http://localhost:3000` automatically — no extra config needed.
 
 ### Run individually
 
