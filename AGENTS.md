@@ -1,6 +1,31 @@
-## Website-to-Styleguide Playbook
+## Liftoff — Project Goal
+
+Paste any URL. Get a complete, buildable design system starter kit.
+
+Liftoff reverse-engineers a website's visual language — colors, typography, spacing, and UI patterns — and generates a self-contained HTML reference document. The output isn't a screenshot or a mirror of someone else's site. It's a *starting point*: a documented design system with extracted tokens and reconstructed components that an engineer or UX designer can fork, adapt, and build from.
+
+The entire extraction is procedural. No AI, no LLMs — just Playwright, computed styles, and structured analysis of the page's frontend assets.
+
+### Core output requirements
+
+1. **No iframes.** Every component specimen in the styleguide is written as actual HTML and CSS, mirroring the structure and visual appearance of what was extracted from the source. Iframes are fragile, uneditable, and defeat the purpose of a buildable starter kit.
+
+2. **Self-contained.** The generated `styleguide.html` must render correctly locally (`file://`), offline, and at any origin — no external CSS requests, no CDN dependencies.
+
+3. **Iterative by section.** Build quality section by section rather than trying to generate everything at once:
+   - **Phase 1 — Foundations:** Colors, typography, spacing, radius, shadows, CSS variables. Iterate until these are high fidelity.
+   - **Phase 2 — Atoms:** Buttons, inputs, badges, dividers. Iterate until these match the source.
+   - **Phase 3 — Molecules & Organisms:** Cards, header, hero, footer. Iterate once atoms are solid.
+
+4. **Engineer/designer audience.** The output should read like a real design system document — with named tokens, usage notes, and specimens that demonstrate actual usage, not just raw values.
+
+---
+
+## Website-to-Styleguide Playbook (manual / AI-assisted)
 
 A sequential, repeatable process for converting any website into a comprehensive design system styleguide. Follow every step in order.
+
+**Note:** This playbook is for manual or AI-assisted analysis. The Liftoff app (`apps/api` + `apps/web`) automates this procedurally. Use this playbook when you need to go deeper than the app's automated output on a specific site.
 
 **Note:** This playbook is designed to be flexible. Different websites have different structures, frameworks, and patterns. Adapt the extraction commands and techniques based on what you find in the source HTML. If a specific pattern mentioned here doesn't exist on your target site, use manual inspection and browser dev tools to identify equivalent structures.
 
@@ -13,7 +38,7 @@ Create a new `ideas/idea{#}/` directory for the output. All files go here.
 Use the `capture-screenshots.mjs` script to take full-page screenshots at desktop (1440px) viewport. The script auto-discovers subpages and captures them all.
 
 ```bash
-node ideas/capture-screenshots.mjs <URL> ideas/idea{#}
+node capture-screenshots.mjs <URL> ideas/idea{#}
 ```
 
 Screenshots are saved to `ideas/idea{#}/screenshots/` as `ref-{page}.png`. These serve as the visual reference throughout the entire process — especially critical for verifying Molecules and Organisms in Step 9.

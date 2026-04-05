@@ -4,3 +4,5 @@ dist
 .env
 .env.local
 apps/web/dist
+dev-data/
+stripe-test-output.html

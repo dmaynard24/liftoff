@@ -3,6 +3,7 @@ import { join } from 'path';
 import { tmpdir } from 'os';
 import { randomUUID } from 'crypto';
 import { fetchRenderedHTML } from './fetch.js';
+import type { ExtractedPage } from './fetch.js';
 import { extractAllTokens } from './tokens.js';
 import { extractComponentNames } from './components.js';
 import { generateStyleguide } from './generator.js';
@@ -17,7 +18,7 @@ export interface ProgressEvent {
 }
 
 const STEPS = [
-  'Fetching rendered HTML',
+  'Fetching and extracting component data',
   'Extracting colors',
   'Extracting typography',
   'Extracting spacing, radius & shadows',
@@ -34,7 +35,7 @@ export async function* runPipeline(url: string): AsyncGenerator<ProgressEvent> {
   const jobDir = join(tmpdir(), 'liftoff-jobs', jobId);
   await mkdir(jobDir, { recursive: true });
 
-  let html = '';
+  let page: ExtractedPage;
   let step = 0;
 
   const emit = (label: string, status: ProgressEvent['status'], extra?: Partial<ProgressEvent>): ProgressEvent => ({
@@ -45,10 +46,10 @@ export async function* runPipeline(url: string): AsyncGenerator<ProgressEvent> {
     ...extra,
   });
 
-  // Step 1: Fetch rendered HTML
+  // Step 1: Fetch rendered HTML + extract component data via Playwright
   yield emit(STEPS[step], 'running');
   try {
-    html = await fetchRenderedHTML(url);
+    page = await fetchRenderedHTML(url);
   } catch (err) {
     yield emit(STEPS[step], 'error', { error: String(err) });
     return;
@@ -56,35 +57,24 @@ export async function* runPipeline(url: string): AsyncGenerator<ProgressEvent> {
   yield emit(STEPS[step], 'done');
   step++;
 
-  // Steps 2–7: Token extraction (fast, synchronous)
-  const extractionSteps: Array<{ label: string; key: keyof ReturnType<typeof extractAllTokens> }> = [
-    { label: STEPS[1], key: 'colors' },
-    { label: STEPS[2], key: 'typography' },
-    { label: STEPS[3], key: 'spacing' },
-    { label: STEPS[4], key: 'animations' },
-    { label: STEPS[5], key: 'layout' },
-  ];
+  // Steps 2–6: Token extraction (synchronous, runs on page.html)
+  const extractionSteps = [
+    STEPS[1], STEPS[2], STEPS[3], STEPS[4], STEPS[5],
+  ] as const;
 
-  const tokens = { colors: null, typography: null, spacing: null, radius: null, shadows: null, animations: null, layout: null } as any;
+  const tokens = extractAllTokens(page.html); // run once, emit progress per group
 
-  for (const { label, key } of extractionSteps) {
+  for (const label of extractionSteps) {
     yield emit(label, 'running');
-    try {
-      const all = extractAllTokens(html);
-      Object.assign(tokens, all);
-    } catch (err) {
-      yield emit(label, 'error', { error: String(err) });
-      return;
-    }
     yield emit(label, 'done');
     step++;
   }
 
-  // Step 7: Component discovery
+  // Step 7: Component name discovery
   yield emit(STEPS[step], 'running');
   let components;
   try {
-    components = extractComponentNames(html);
+    components = extractComponentNames(page.html);
   } catch (err) {
     yield emit(STEPS[step], 'error', { error: String(err) });
     return;
@@ -96,7 +86,7 @@ export async function* runPipeline(url: string): AsyncGenerator<ProgressEvent> {
   yield emit(STEPS[step], 'running');
   let styleguideHtml: string;
   try {
-    styleguideHtml = generateStyleguide(url, tokens, components);
+    styleguideHtml = generateStyleguide(url, tokens, components, page);
   } catch (err) {
     yield emit(STEPS[step], 'error', { error: String(err) });
     return;

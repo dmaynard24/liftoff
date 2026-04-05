@@ -1,58 +1,42 @@
-import type { Tokens } from './tokens.js';
-import type { ComponentInfo } from './components.js';
-import type { ExtractedPage } from './fetch.js';
-
-export function generateStyleguide(
-  sourceUrl: string,
-  tokens: Tokens,
-  components: ComponentInfo[],
-  page: ExtractedPage,
-): string {
-  const { colors, typography, spacing, radius, shadows, animations, layout } = tokens;
-
-  const hostname = new URL(sourceUrl).hostname;
-
-  // Pick a primary accent from top chromatic color, fall back to a neutral
-  const accentColor = colors.chromatic[0]?.value ?? '#7c6dfa';
-
-  // ─── Google Fonts (for <head>) ────────────────────────────────────────────
-  const uniqueFontUrls = [...new Set([
-    ...(typography.googleFontsUrl ? [typography.googleFontsUrl] : []),
-    ...page.googleFontsLinks,
-  ])];
-  const googleFontsLinks = uniqueFontUrls.length
-    ? `<link rel="preconnect" href="https://fonts.googleapis.com">
+export function generateStyleguide(sourceUrl, tokens, components, page) {
+    const { colors, typography, spacing, radius, shadows, animations, layout } = tokens;
+    const hostname = new URL(sourceUrl).hostname;
+    // Pick a primary accent from top chromatic color, fall back to a neutral
+    const accentColor = colors.chromatic[0]?.value ?? '#7c6dfa';
+    // ─── Google Fonts (for <head>) ────────────────────────────────────────────
+    const uniqueFontUrls = [...new Set([
+            ...(typography.googleFontsUrl ? [typography.googleFontsUrl] : []),
+            ...page.googleFontsLinks,
+        ])];
+    const googleFontsLinks = uniqueFontUrls.length
+        ? `<link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   ${uniqueFontUrls.map((u) => `<link rel="stylesheet" href="${u}">`).join('\n  ')}`
-    : '';
-  // ─── Helpers ───────────────────────────────────────────────────────────────
-  const esc = (s: string) => s.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  function section(id: string, label: string, title: string, desc: string, body: string): string {
-    return `
+        : '';
+    // ─── Helpers ───────────────────────────────────────────────────────────────
+    const esc = (s) => s.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    function section(id, label, title, desc, body) {
+        return `
   <section class="sg-section" id="${id}">
     <p class="sg-section-label">${label}</p>
     <h2 class="sg-section-title">${title}</h2>
     <p class="sg-section-desc">${desc}</p>
     ${body}
   </section>`;
-  }
-
-  function sub(title: string, body: string): string {
-    return `<div class="sg-sub"><h3 class="sg-sub-title">${title}</h3>${body}</div>`;
-  }
-
-  function card(body: string, footer?: string): string {
-    return `<div class="sg-card"><div class="sg-card-body">${body}</div>${footer ? `<div class="sg-card-footer">${footer}</div>` : ''}</div>`;
-  }
-
-  function tokenList(items: string[]): string {
-    if (!items.length) return '<p class="sg-muted">None detected</p>';
-    return `<ul class="sg-token-list">${items.map((i) => `<li><code>${esc(i)}</code></li>`).join('')}</ul>`;
-  }
-
-  // ─── Colors ────────────────────────────────────────────────────────────────
-  const colorSwatch = ({ value, count }: { value: string; count: number }) => `
+    }
+    function sub(title, body) {
+        return `<div class="sg-sub"><h3 class="sg-sub-title">${title}</h3>${body}</div>`;
+    }
+    function card(body, footer) {
+        return `<div class="sg-card"><div class="sg-card-body">${body}</div>${footer ? `<div class="sg-card-footer">${footer}</div>` : ''}</div>`;
+    }
+    function tokenList(items) {
+        if (!items.length)
+            return '<p class="sg-muted">None detected</p>';
+        return `<ul class="sg-token-list">${items.map((i) => `<li><code>${esc(i)}</code></li>`).join('')}</ul>`;
+    }
+    // ─── Colors ────────────────────────────────────────────────────────────────
+    const colorSwatch = ({ value, count }) => `
       <div class="color-swatch">
         <div class="color-swatch-preview" style="background:${value}"></div>
         <div class="color-swatch-info">
@@ -60,58 +44,43 @@ export function generateStyleguide(
           <div class="color-swatch-count">${count}×</div>
         </div>
       </div>`;
-
-  const colorsSection = section(
-    'colors', 'Foundations', 'Colors',
-    "All color values extracted from the site's stylesheets, deduplicated and grouped by hue.",
-    [
-      colors.chromatic.length ? sub('Chromatic',
-        `<div class="sg-grid-4">${colors.chromatic.map(colorSwatch).join('')}</div>`) : '',
-      colors.grayscale.length ? sub('Grayscale',
-        `<div class="sg-grid-4">${colors.grayscale.map(colorSwatch).join('')}</div>`) : '',
-      colors.rgba.length ? sub('Opacity variants',
-        `<div class="sg-grid-4">${colors.rgba.map(colorSwatch).join('')}</div>`) : '',
-    ].join(''),
-  );
-
-  // ─── Typography ────────────────────────────────────────────────────────────
-  // Supplement regex-extracted tokens with computed styles from Playwright —
-  // sites that load CSS externally (Stripe, etc.) have empty regex results.
-  const allPageEls = [
-    ...page.components.buttons,
-    ...page.components.badges,
-    ...page.components.inputs,
-    ...page.components.links,
-    page.components.header,
-    page.components.nav,
-    page.components.hero,
-    page.components.footer,
-  ].filter(Boolean) as typeof page.components.buttons;
-
-  function uniq(arr: string[]): string[] {
-    return [...new Set(arr.filter(Boolean))];
-  }
-
-  const computedFamilies = uniq(allPageEls.map((el) => el.styles.fontFamily ?? ''));
-  const computedSizes = uniq(allPageEls.map((el) => el.styles.fontSize ?? ''));
-  const computedWeights = uniq(allPageEls.map((el) => el.styles.fontWeight ?? ''));
-
-  const allFamilies = uniq([...typography.families, ...computedFamilies]);
-  const allWeights = uniq([...typography.weights, ...computedWeights])
-    .filter((w) => /^\d+$/.test(w))   // only numeric weights
-    .sort((a, b) => Number(a) - Number(b));
-
-  // Sizes: merge, strip var() references, sort numerically
-  const allSizes = uniq([...typography.sizes, ...computedSizes])
-    .filter((s) => /^\d+(\.\d+)?(px|rem|em)$/.test(s.trim()))
-    .sort((a, b) => {
-      const toNum = (v: string) => parseFloat(v) * (v.includes('rem') ? 16 : 1);
-      return toNum(a) - toNum(b);
+    const colorsSection = section('colors', 'Foundations', 'Colors', "All color values extracted from the site's stylesheets, deduplicated and grouped by hue.", [
+        colors.chromatic.length ? sub('Chromatic', `<div class="sg-grid-4">${colors.chromatic.map(colorSwatch).join('')}</div>`) : '',
+        colors.grayscale.length ? sub('Grayscale', `<div class="sg-grid-4">${colors.grayscale.map(colorSwatch).join('')}</div>`) : '',
+        colors.rgba.length ? sub('Opacity variants', `<div class="sg-grid-4">${colors.rgba.map(colorSwatch).join('')}</div>`) : '',
+    ].join(''));
+    // ─── Typography ────────────────────────────────────────────────────────────
+    // Supplement regex-extracted tokens with computed styles from Playwright —
+    // sites that load CSS externally (Stripe, etc.) have empty regex results.
+    const allPageEls = [
+        ...page.components.buttons,
+        ...page.components.badges,
+        ...page.components.inputs,
+        ...page.components.links,
+        page.components.header,
+        page.components.nav,
+        page.components.hero,
+        page.components.footer,
+    ].filter(Boolean);
+    function uniq(arr) {
+        return [...new Set(arr.filter(Boolean))];
+    }
+    const computedFamilies = uniq(allPageEls.map((el) => el.styles.fontFamily ?? ''));
+    const computedSizes = uniq(allPageEls.map((el) => el.styles.fontSize ?? ''));
+    const computedWeights = uniq(allPageEls.map((el) => el.styles.fontWeight ?? ''));
+    const allFamilies = uniq([...typography.families, ...computedFamilies]);
+    const allWeights = uniq([...typography.weights, ...computedWeights])
+        .filter((w) => /^\d+$/.test(w)) // only numeric weights
+        .sort((a, b) => Number(a) - Number(b));
+    // Sizes: merge, strip var() references, sort numerically
+    const allSizes = uniq([...typography.sizes, ...computedSizes])
+        .filter((s) => /^\d+(\.\d+)?(px|rem|em)$/.test(s.trim()))
+        .sort((a, b) => {
+        const toNum = (v) => parseFloat(v) * (v.includes('rem') ? 16 : 1);
+        return toNum(a) - toNum(b);
     });
-
-  const primaryFamily = allFamilies[0] ?? 'inherit';
-
-  const familySpecimens = allFamilies.slice(0, 4).map((family) => `
+    const primaryFamily = allFamilies[0] ?? 'inherit';
+    const familySpecimens = allFamilies.slice(0, 4).map((family) => `
     <div class="font-specimen">
       <p class="specimen-text" style="font-family:${family}">
         Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz 0123456789
@@ -121,125 +90,106 @@ export function generateStyleguide(
         ${allWeights.length ? `<span>weights: ${allWeights.join(' · ')}</span>` : ''}
       </div>
     </div>`).join('');
-
-  // ── Type scale naming ────────────────────────────────────────────────────
-  const ROLE_NAMES: Record<string, string> = {
-    h1: 'Heading 1', h2: 'Heading 2', h3: 'Heading 3',
-    h4: 'Heading 4', h5: 'Heading 5', h6: 'Heading 6',
-    p: 'Paragraph', a: 'Link', li: 'List Item',
-    small: 'Small Text', label: 'Label', caption: 'Caption',
-  };
-  const VARIANT_SUFFIXES = ['Large', 'Medium', 'Small', 'XSmall'];
-
-  // Group by role, sort each group largest → smallest
-  const byRole = new Map<string, typeof page.typeScale>();
-  for (const entry of page.typeScale) {
-    const group = byRole.get(entry.role) ?? [];
-    group.push(entry);
-    byRole.set(entry.role, group);
-  }
-
-  // Flatten with semantic names, then sort overall largest → smallest
-  const namedScale = [...byRole.entries()].flatMap(([role, entries]) => {
-    const sorted = [...entries].sort((a, b) => parseFloat(b.fontSize) - parseFloat(a.fontSize));
-    const baseName = ROLE_NAMES[role] ?? role;
-    return sorted.map((entry, i) => {
-      let name: string;
-      if (sorted.length === 1) {
-        name = baseName;
-      } else if (sorted.length === 2) {
-        name = i === 0 ? `${baseName} Large` : `${baseName} Small`;
-      } else if (sorted.length <= 4) {
-        name = `${baseName} ${VARIANT_SUFFIXES[i]}`;
-      } else {
-        name = `${baseName} — ${entry.fontSize}`;
-      }
-      return { ...entry, name };
-    });
-  }).sort((a, b) => parseFloat(b.fontSize) - parseFloat(a.fontSize));
-
-  // Fall back to regex-extracted sizes if Playwright captured nothing
-  const scaleSource = namedScale.length > 0 ? namedScale : allSizes.map((size) => ({
-    fontSize: size, fontWeight: '400', lineHeight: 'normal',
-    letterSpacing: 'normal', fontFamily: primaryFamily, name: size, role: '',
-  }));
-
-  const typeRows = scaleSource.slice(0, 16).map(({ fontSize, fontWeight, lineHeight, letterSpacing, fontFamily, name }) => {
-    const lsDisplay = letterSpacing && letterSpacing !== '0px' && letterSpacing !== 'normal' ? ` · ${esc(letterSpacing)}` : '';
-    const lhPx = parseFloat(lineHeight);
-    const fsPx = parseFloat(fontSize);
-    const lhRatio = !isNaN(lhPx) && !isNaN(fsPx) && fsPx > 0
-      ? (Math.round((lhPx / fsPx) * 100) / 100).toFixed(2)
-      : lineHeight;
-    return `<div class="type-row">
+    // ── Type scale naming ────────────────────────────────────────────────────
+    const ROLE_NAMES = {
+        h1: 'Heading 1', h2: 'Heading 2', h3: 'Heading 3',
+        h4: 'Heading 4', h5: 'Heading 5', h6: 'Heading 6',
+        p: 'Paragraph', a: 'Link', li: 'List Item',
+        small: 'Small Text', label: 'Label', caption: 'Caption',
+    };
+    const VARIANT_SUFFIXES = ['Large', 'Medium', 'Small', 'XSmall'];
+    // Group by role, sort each group largest → smallest
+    const byRole = new Map();
+    for (const entry of page.typeScale) {
+        const group = byRole.get(entry.role) ?? [];
+        group.push(entry);
+        byRole.set(entry.role, group);
+    }
+    // Flatten with semantic names, then sort overall largest → smallest
+    const namedScale = [...byRole.entries()].flatMap(([role, entries]) => {
+        const sorted = [...entries].sort((a, b) => parseFloat(b.fontSize) - parseFloat(a.fontSize));
+        const baseName = ROLE_NAMES[role] ?? role;
+        return sorted.map((entry, i) => {
+            let name;
+            if (sorted.length === 1) {
+                name = baseName;
+            }
+            else if (sorted.length === 2) {
+                name = i === 0 ? `${baseName} Large` : `${baseName} Small`;
+            }
+            else if (sorted.length <= 4) {
+                name = `${baseName} ${VARIANT_SUFFIXES[i]}`;
+            }
+            else {
+                name = `${baseName} — ${entry.fontSize}`;
+            }
+            return { ...entry, name };
+        });
+    }).sort((a, b) => parseFloat(b.fontSize) - parseFloat(a.fontSize));
+    // Fall back to regex-extracted sizes if Playwright captured nothing
+    const scaleSource = namedScale.length > 0 ? namedScale : allSizes.map((size) => ({
+        fontSize: size, fontWeight: '400', lineHeight: 'normal',
+        letterSpacing: 'normal', fontFamily: primaryFamily, name: size, role: '',
+    }));
+    const typeRows = scaleSource.slice(0, 16).map(({ fontSize, fontWeight, lineHeight, letterSpacing, fontFamily, name }) => {
+        const lsDisplay = letterSpacing && letterSpacing !== '0px' && letterSpacing !== 'normal' ? ` · ${esc(letterSpacing)}` : '';
+        const lhPx = parseFloat(lineHeight);
+        const fsPx = parseFloat(fontSize);
+        const lhRatio = !isNaN(lhPx) && !isNaN(fsPx) && fsPx > 0
+            ? (Math.round((lhPx / fsPx) * 100) / 100).toFixed(2)
+            : lineHeight;
+        return `<div class="type-row">
       <div class="type-meta">
         <span class="type-meta-size">${esc(fontSize)}</span>
         <span class="type-meta-weight">${esc(fontWeight)}${lsDisplay} · lh ${esc(lhRatio)}</span>
       </div>
       <div class="type-sample" style="font-size:${fontSize};font-weight:${fontWeight};line-height:${lineHeight};letter-spacing:${letterSpacing};font-family:${fontFamily}">${esc(name)}</div>
     </div>`;
-  }).join('');
-
-  const allFontUrls = [
-    ...(typography.googleFontsUrl ? [typography.googleFontsUrl] : []),
-    ...page.googleFontsLinks,
-  ];
-
-  const typographySection = section(
-    'typography', 'Foundations', 'Typography',
-    "Font families and type scale derived from the page's rendered styles.",
-    [
-      familySpecimens ? sub('Font families', familySpecimens) : '',
-      typeRows ? sub('Type scale', `<div class="type-scale">${typeRows}</div>`) : '',
-      !familySpecimens && !typeRows ? '<p class="sg-muted">No typography values detected</p>' : '',
-      allFontUrls.length
-        ? `<p class="sg-gf-link">Google Fonts: <a href="${allFontUrls[0]}" target="_blank" rel="noopener">${esc(allFontUrls[0])}</a></p>`
-        : '',
-    ].join(''),
-  );
-
-  // ─── Spacing ───────────────────────────────────────────────────────────────
-  // Use Playwright-sampled scale; fall back to regex if empty
-  const spacingSource = page.spacingScale.length
-    ? page.spacingScale
-    : spacing.filter((v) => /^\d+(\.\d+)?px$/.test(v)).map((v) => {
-        const px = parseFloat(v);
-        const rem = px / 16;
-        return { px, rem: `${rem}rem`, sources: [] as string[] };
-      });
-
-  // Max bar width: largest value maps to 400px, others proportional
-  const maxPx = Math.max(...spacingSource.map((s) => s.px), 1);
-
-  const spacingBars = spacingSource.slice(0, 20).map(({ px, rem }) => {
-    const barWidth = Math.round((px / maxPx) * 400);
-    // Only show rem when it's actually a rem value (not a px fallback)
-    const remLabel = rem.endsWith('rem') ? `<span class="space-rem">${esc(rem)}</span>` : '';
-    return `<div class="space-row">
+    }).join('');
+    const allFontUrls = [
+        ...(typography.googleFontsUrl ? [typography.googleFontsUrl] : []),
+        ...page.googleFontsLinks,
+    ];
+    const typographySection = section('typography', 'Foundations', 'Typography', "Font families and type scale derived from the page's rendered styles.", [
+        familySpecimens ? sub('Font families', familySpecimens) : '',
+        typeRows ? sub('Type scale', `<div class="type-scale">${typeRows}</div>`) : '',
+        !familySpecimens && !typeRows ? '<p class="sg-muted">No typography values detected</p>' : '',
+        allFontUrls.length
+            ? `<p class="sg-gf-link">Google Fonts: <a href="${allFontUrls[0]}" target="_blank" rel="noopener">${esc(allFontUrls[0])}</a></p>`
+            : '',
+    ].join(''));
+    // ─── Spacing ───────────────────────────────────────────────────────────────
+    // Use Playwright-sampled scale; fall back to regex if empty
+    const spacingSource = page.spacingScale.length
+        ? page.spacingScale
+        : spacing.filter((v) => /^\d+(\.\d+)?px$/.test(v)).map((v) => {
+            const px = parseFloat(v);
+            const rem = px / 16;
+            return { px, rem: `${rem}rem`, sources: [] };
+        });
+    // Max bar width: largest value maps to 400px, others proportional
+    const maxPx = Math.max(...spacingSource.map((s) => s.px), 1);
+    const spacingBars = spacingSource.slice(0, 20).map(({ px, rem }) => {
+        const barWidth = Math.round((px / maxPx) * 400);
+        // Only show rem when it's actually a rem value (not a px fallback)
+        const remLabel = rem.endsWith('rem') ? `<span class="space-rem">${esc(rem)}</span>` : '';
+        return `<div class="space-row">
       <span class="space-label">${px}px</span>
       <div class="space-bar" style="width:${barWidth}px"></div>
       ${remLabel}
     </div>`;
-  }).join('');
-
-  const spacingSection = section(
-    'spacing', 'Foundations', 'Spacing',
-    'Spacing values sampled from padding, gap, and margin across visible page elements.',
-    sub('Scale', spacingBars || '<p class="sg-muted">No spacing values detected</p>'),
-  );
-
-  // ─── Borders & Radius (combined) ──────────────────────────────────────────
-  const radiusSource = page.radiusScale.length
-    ? page.radiusScale
-    : radius.map((v) => ({ value: v, px: parseFloat(v) }));
-
-  const radiusItems = radiusSource.slice(0, 10).map(({ value }) => `
+    }).join('');
+    const spacingSection = section('spacing', 'Foundations', 'Spacing', 'Spacing values sampled from padding, gap, and margin across visible page elements.', sub('Scale', spacingBars || '<p class="sg-muted">No spacing values detected</p>'));
+    // ─── Borders & Radius (combined) ──────────────────────────────────────────
+    const radiusSource = page.radiusScale.length
+        ? page.radiusScale
+        : radius.map((v) => ({ value: v, px: parseFloat(v) }));
+    const radiusItems = radiusSource.slice(0, 10).map(({ value }) => `
     <div class="radius-item">
       <div class="radius-preview" style="border-radius:${value}"></div>
       <div class="radius-label">${esc(value)}</div>
     </div>`).join('');
-
-  const borderItems = page.borderScale.slice(0, 10).map(({ width, color, style }) => `
+    const borderItems = page.borderScale.slice(0, 10).map(({ width, color, style }) => `
     <div class="border-row">
       <div class="border-preview" style="border:${width} ${style} ${color}"></div>
       <div class="border-meta">
@@ -248,54 +198,39 @@ export function generateStyleguide(
         <span class="border-color">${esc(color)}</span>
       </div>
     </div>`).join('');
-
-  const bordersAndRadiusSection = (radiusSource.length || page.borderScale.length) ? section(
-    'borders', 'Foundations', 'Borders & Radius',
-    'Border styles and radius values sampled from buttons, inputs, cards, and dividers.',
-    [
-      radiusItems ? sub('Border Radius', `<div class="sg-flex-16">${radiusItems}</div>`) : '',
-      borderItems ? sub('Border Styles', `<div class="border-scale">${borderItems}</div>`) : '',
-      !radiusItems && !borderItems ? '<p class="sg-muted">No border values detected</p>' : '',
-    ].join(''),
-  ) : '';
-
-  // ─── Shadows ───────────────────────────────────────────────────────────────
-  const shadowSource = page.shadowScale.length
-    ? page.shadowScale
-    : shadows.map((v) => ({ value: v }));
-
-  const shadowItems = shadowSource.slice(0, 6).map(({ value }, i) => `
+    const bordersAndRadiusSection = (radiusSource.length || page.borderScale.length) ? section('borders', 'Foundations', 'Borders & Radius', 'Border styles and radius values sampled from buttons, inputs, cards, and dividers.', [
+        radiusItems ? sub('Border Radius', `<div class="sg-flex-16">${radiusItems}</div>`) : '',
+        borderItems ? sub('Border Styles', `<div class="border-scale">${borderItems}</div>`) : '',
+        !radiusItems && !borderItems ? '<p class="sg-muted">No border values detected</p>' : '',
+    ].join('')) : '';
+    // ─── Shadows ───────────────────────────────────────────────────────────────
+    const shadowSource = page.shadowScale.length
+        ? page.shadowScale
+        : shadows.map((v) => ({ value: v }));
+    const shadowItems = shadowSource.slice(0, 6).map(({ value }, i) => `
     <div class="shadow-item">
       <div class="shadow-preview" style="box-shadow:${value}"></div>
       <div class="shadow-label-name">Shadow ${i + 1}</div>
       <div class="shadow-label-val">${esc(value)}</div>
     </div>`).join('');
-
-  const shadowsSection = section(
-    'shadows', 'Foundations', 'Shadows & Effects',
-    'Box-shadow values sampled from cards, modals, and elevated elements.',
-    sub('Values',
-      shadowItems
+    const shadowsSection = section('shadows', 'Foundations', 'Shadows & Effects', 'Box-shadow values sampled from cards, modals, and elevated elements.', sub('Values', shadowItems
         ? `<div class="sg-grid-3">${shadowItems}</div>`
-        : '<p class="sg-muted">No box-shadow values detected</p>',
-    ),
-  );
-
-  // ─── Motion ────────────────────────────────────────────────────────────────
-  // Deduplicate motion by duration+easing — many properties share the same timing
-  const seenMotionKey = new Set<string>();
-  const dedupedMotion = page.motionScale.filter(({ duration, easing }) => {
-    const key = `${duration}|${easing}`;
-    if (seenMotionKey.has(key)) return false;
-    seenMotionKey.add(key);
-    return true;
-  });
-
-  const motionItems = dedupedMotion.slice(0, 8).map(({ duration, easing, property }, i) => {
-    // Sanitize for use as inline style value — strip anything after delay
-    const safeTransition = `all ${duration} ${easing}`;
-    const uid = `motion-demo-${i}`;
-    return `<div class="motion-row">
+        : '<p class="sg-muted">No box-shadow values detected</p>'));
+    // ─── Motion ────────────────────────────────────────────────────────────────
+    // Deduplicate motion by duration+easing — many properties share the same timing
+    const seenMotionKey = new Set();
+    const dedupedMotion = page.motionScale.filter(({ duration, easing }) => {
+        const key = `${duration}|${easing}`;
+        if (seenMotionKey.has(key))
+            return false;
+        seenMotionKey.add(key);
+        return true;
+    });
+    const motionItems = dedupedMotion.slice(0, 8).map(({ duration, easing, property }, i) => {
+        // Sanitize for use as inline style value — strip anything after delay
+        const safeTransition = `all ${duration} ${easing}`;
+        const uid = `motion-demo-${i}`;
+        return `<div class="motion-row">
       <div class="motion-demo-wrap">
         <div class="motion-demo" id="${uid}" style="transition:${safeTransition}"
           onmouseenter="this.classList.add('motion-active')"
@@ -309,75 +244,58 @@ export function generateStyleguide(
         <span class="motion-property">${esc(property)}</span>
       </div>
     </div>`;
-  }).join('');
-
-  const motionSection = page.motionScale.length ? section(
-    'motion', 'Foundations', 'Motion',
-    'Transition values sampled from interactive elements. Hover each demo to see the timing and easing in action.',
-    sub('Transitions', `<div class="motion-scale">${motionItems}</div>`),
-  ) : '';
-
-  // ─── Atoms ─────────────────────────────────────────────────────────────────
-  const btnRadius = radius.find((r) => /px$/.test(r) && parseInt(r) >= 4) ?? '8px';
-  const transition = animations.transitions[0] ?? '0.2s ease';
-
-  // Inline style string from a computed element's styles
-  function inlineStyle(s: Record<string, string>, keys: string[]): string {
-    return keys
-      .filter((k) => s[k] && s[k] !== 'none' && s[k] !== 'normal' && s[k] !== 'auto')
-      .map((k) => `${k.replace(/([A-Z])/g, '-$1').toLowerCase()}:${s[k]}`)
-      .join(';');
-  }
-
-  // Buttons — real variants from page, fallback to hardcoded
-  const realButtons = page.components.buttons;
-  const buttonsBody = realButtons.length
-    ? `<div class="sg-flex">${realButtons.map((b) => {
-        const s = inlineStyle(b.styles, ['backgroundColor', 'color', 'borderRadius', 'padding', 'fontSize', 'fontWeight', 'border', 'boxShadow']);
-        const label = b.text.trim() || b.tag;
-        return `<button style="${s};cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;text-decoration:none;font-family:inherit">${esc(label)}</button>`;
-      }).join('')}</div>`
-    : `<div class="sg-flex">
+    }).join('');
+    const motionSection = page.motionScale.length ? section('motion', 'Foundations', 'Motion', 'Transition values sampled from interactive elements. Hover each demo to see the timing and easing in action.', sub('Transitions', `<div class="motion-scale">${motionItems}</div>`)) : '';
+    // ─── Atoms ─────────────────────────────────────────────────────────────────
+    const btnRadius = radius.find((r) => /px$/.test(r) && parseInt(r) >= 4) ?? '8px';
+    const transition = animations.transitions[0] ?? '0.2s ease';
+    // Inline style string from a computed element's styles
+    function inlineStyle(s, keys) {
+        return keys
+            .filter((k) => s[k] && s[k] !== 'none' && s[k] !== 'normal' && s[k] !== 'auto')
+            .map((k) => `${k.replace(/([A-Z])/g, '-$1').toLowerCase()}:${s[k]}`)
+            .join(';');
+    }
+    // Buttons — real variants from page, fallback to hardcoded
+    const realButtons = page.components.buttons;
+    const buttonsBody = realButtons.length
+        ? `<div class="sg-flex">${realButtons.map((b) => {
+            const s = inlineStyle(b.styles, ['backgroundColor', 'color', 'borderRadius', 'padding', 'fontSize', 'fontWeight', 'border', 'boxShadow']);
+            const label = b.text.trim() || b.tag;
+            return `<button style="${s};cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;text-decoration:none;font-family:inherit">${esc(label)}</button>`;
+        }).join('')}</div>`
+        : `<div class="sg-flex">
         <button class="btn btn-primary btn-lg">Primary</button>
         <button class="btn btn-ghost btn-lg">Ghost</button>
         <button class="btn btn-accent btn-lg">Accent</button>
         <button class="btn btn-primary btn-md" disabled>Disabled</button>
       </div>`;
-
-  const buttonsFooter = realButtons.length
-    ? `${realButtons.length} button variant${realButtons.length > 1 ? 's' : ''} extracted from page`
-    : 'fallback — no buttons detected on page';
-
-  const buttonsAtom = sub('Buttons', card(buttonsBody, buttonsFooter));
-
-  // Badges/tags — real variants from page, fallback to hardcoded
-  const realBadges = page.components.badges;
-  const badgesBody = realBadges.length
-    ? `<div class="sg-flex">${realBadges.map((b) => {
-        const s = inlineStyle(b.styles, ['backgroundColor', 'color', 'borderRadius', 'padding', 'fontSize', 'fontWeight', 'border']);
-        const label = b.text.trim() || b.tag;
-        return `<span style="${s};display:inline-flex;align-items:center;white-space:nowrap">${esc(label)}</span>`;
-      }).join('')}</div>`
-    : `<div class="sg-flex">
+    const buttonsFooter = realButtons.length
+        ? `${realButtons.length} button variant${realButtons.length > 1 ? 's' : ''} extracted from page`
+        : 'fallback — no buttons detected on page';
+    const buttonsAtom = sub('Buttons', card(buttonsBody, buttonsFooter));
+    // Badges/tags — real variants from page, fallback to hardcoded
+    const realBadges = page.components.badges;
+    const badgesBody = realBadges.length
+        ? `<div class="sg-flex">${realBadges.map((b) => {
+            const s = inlineStyle(b.styles, ['backgroundColor', 'color', 'borderRadius', 'padding', 'fontSize', 'fontWeight', 'border']);
+            const label = b.text.trim() || b.tag;
+            return `<span style="${s};display:inline-flex;align-items:center;white-space:nowrap">${esc(label)}</span>`;
+        }).join('')}</div>`
+        : `<div class="sg-flex">
         <span class="tag">Default</span>
         <span class="tag tag-blue"><span class="tag-dot"></span>Info</span>
         <span class="tag tag-green"><span class="tag-dot"></span>Success</span>
         <span class="tag tag-yellow"><span class="tag-dot"></span>Warning</span>
         <span class="tag tag-red"><span class="tag-dot"></span>Error</span>
       </div>`;
-
-  const tagsAtom = sub('Tags & Badges', card(
-    badgesBody,
-    realBadges.length
-      ? `${realBadges.length} badge/tag variant${realBadges.length > 1 ? 's' : ''} extracted from page`
-      : 'fallback — no badges detected on page',
-  ));
-
-  // Inputs — real styles from page, fallback to hardcoded
-  const realInput = page.components.inputs[0];
-  const realTextarea = page.components.textareas[0];
-  const inputsAtom = sub('Form Inputs',
-    `<div class="sg-grid-2">
+    const tagsAtom = sub('Tags & Badges', card(badgesBody, realBadges.length
+        ? `${realBadges.length} badge/tag variant${realBadges.length > 1 ? 's' : ''} extracted from page`
+        : 'fallback — no badges detected on page'));
+    // Inputs — real styles from page, fallback to hardcoded
+    const realInput = page.components.inputs[0];
+    const realTextarea = page.components.textareas[0];
+    const inputsAtom = sub('Form Inputs', `<div class="sg-grid-2">
       ${card(`
         <label class="input-label">Default</label>
         <input type="text" placeholder="Placeholder text" style="${realInput ? inlineStyle(realInput.styles, ['backgroundColor', 'color', 'borderRadius', 'padding', 'fontSize', 'border']) + ';width:100%;display:block;outline:none;box-sizing:border-box' : ''}" class="${realInput ? '' : 'input'}" />
@@ -388,71 +306,40 @@ export function generateStyleguide(
         <label class="input-label">Textarea</label>
         <textarea placeholder="Multi-line input..." style="${realTextarea ? inlineStyle(realTextarea.styles, ['backgroundColor', 'color', 'borderRadius', 'padding', 'fontSize', 'border']) + ';width:100%;display:block;resize:vertical;min-height:100px;outline:none;box-sizing:border-box' : ''}" class="${realTextarea ? '' : 'textarea'}"></textarea>
       `, realTextarea ? 'textarea styles extracted from page' : 'fallback styles')}
-    </div>`,
-  );
-
-  const avatarsAtom = sub('Avatars',
-    card(
-      `<div class="sg-flex">
+    </div>`);
+    const avatarsAtom = sub('Avatars', card(`<div class="sg-flex">
         <div class="avatar avatar-lg">AB</div>
         <div class="avatar avatar-md">AB</div>
         <div class="avatar avatar-sm">AB</div>
-      </div>`,
-      'avatar · avatar-sm / avatar-md / avatar-lg',
-    ),
-  );
-
-  const dividersAtom = sub('Dividers', card(`<hr class="divider" />`));
-
-  const atomsSection = section(
-    'atoms', 'Atoms', 'Atoms',
-    "Interactive primitives rendered with styles extracted directly from the page via computed styles.",
-    [buttonsAtom, tagsAtom, inputsAtom, avatarsAtom, dividersAtom].join(''),
-  );
-
-  // ─── Molecules & Organisms ─────────────────────────────────────────────────
-  // Phase 3 — not yet implemented. Will render as clean reconstructed HTML.
-  const moleculesSection = '';
-  const organismsSection = '';
-
-  // ─── Animations ────────────────────────────────────────────────────────────
-  const animationsSection = section(
-    'animations', 'Patterns', 'Animations & Transitions',
-    'Motion values extracted from transition and animation declarations.',
-    `<div class="sg-grid-2">
+      </div>`, 'avatar · avatar-sm / avatar-md / avatar-lg'));
+    const dividersAtom = sub('Dividers', card(`<hr class="divider" />`));
+    const atomsSection = section('atoms', 'Atoms', 'Atoms', "Interactive primitives rendered with styles extracted directly from the page via computed styles.", [buttonsAtom, tagsAtom, inputsAtom, avatarsAtom, dividersAtom].join(''));
+    // ─── Molecules & Organisms ─────────────────────────────────────────────────
+    // Phase 3 — not yet implemented. Will render as clean reconstructed HTML.
+    const moleculesSection = '';
+    const organismsSection = '';
+    // ─── Animations ────────────────────────────────────────────────────────────
+    const animationsSection = section('animations', 'Patterns', 'Animations & Transitions', 'Motion values extracted from transition and animation declarations.', `<div class="sg-grid-2">
       ${card(`<h4 class="sg-card-inner-title">Transitions</h4>${tokenList(animations.transitions.slice(0, 8))}`)}
       ${card(`<h4 class="sg-card-inner-title">Animations</h4>${tokenList(animations.animations.slice(0, 8))}`)}
-    </div>`,
-  );
-
-  // ─── Layout ────────────────────────────────────────────────────────────────
-  const layoutSection = section(
-    'layout', 'Patterns', 'Layout',
-    "Max-widths, grid templates, and responsive breakpoints extracted from the site's CSS.",
-    `<div class="sg-grid-2" style="margin-bottom:24px">
+    </div>`);
+    // ─── Layout ────────────────────────────────────────────────────────────────
+    const layoutSection = section('layout', 'Patterns', 'Layout', "Max-widths, grid templates, and responsive breakpoints extracted from the site's CSS.", `<div class="sg-grid-2" style="margin-bottom:24px">
       ${card(`<h4 class="sg-card-inner-title">Max widths</h4>${tokenList(layout.maxWidths.slice(0, 10))}`)}
       ${card(`<h4 class="sg-card-inner-title">Grid columns</h4>${tokenList(layout.gridColumns.slice(0, 8))}`)}
     </div>
-    ${layout.breakpoints.length ? sub('Breakpoints', tokenList(layout.breakpoints.slice(0, 8))) : ''}`,
-  );
-
-  // ─── Components ────────────────────────────────────────────────────────────
-  const componentChips = components.length
-    ? `<div class="sg-flex">${components.map((c) => `
+    ${layout.breakpoints.length ? sub('Breakpoints', tokenList(layout.breakpoints.slice(0, 8))) : ''}`);
+    // ─── Components ────────────────────────────────────────────────────────────
+    const componentChips = components.length
+        ? `<div class="sg-flex">${components.map((c) => `
         <div class="component-chip">
           <span class="component-name">${esc(c.name)}</span>
           <span class="component-source">${c.source}</span>
         </div>`).join('')}</div>`
-    : '<p class="sg-muted">No named components detected via data attributes or semantic classes.</p>';
-
-  const componentsSection = section(
-    'components', 'Patterns', 'Detected Components',
-    'Component names discovered from data attributes and semantic class patterns in the HTML.',
-    componentChips,
-  );
-
-  // ─── HTML ──────────────────────────────────────────────────────────────────
-  return `<!DOCTYPE html>
+        : '<p class="sg-muted">No named components detected via data attributes or semantic classes.</p>';
+    const componentsSection = section('components', 'Patterns', 'Detected Components', 'Component names discovered from data attributes and semantic class patterns in the HTML.', componentChips);
+    // ─── HTML ──────────────────────────────────────────────────────────────────
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
