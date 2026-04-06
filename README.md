@@ -1,73 +1,27 @@
 # Liftoff
 
-This is a tool for converting any website into a comprehensive styleguide.
+A manual / AI-assisted playbook for converting any website into a comprehensive design system styleguide.
 
 ## Structure
 
-- `ideas/` - Prototyping folder containing HTML, CSS, and JavaScript prototypes for brainstorming and moodboarding
-- `capture-screenshots.mjs` - Script for capturing full-page screenshots from websites
-- `AGENTS.md` - Detailed playbook for converting websites into design system styleguides
-- `research.md` - Research notes and findings
-- `CLAUDE.md` - AI assistant configuration and notes
+- `ideas/` — Output folder. Each site gets its own `ideas/idea{#}/` directory containing `tokens.md`, `styleguide.html`, and reference screenshots.
+- `scripts/capture-screenshots.mjs` — Captures full-page screenshots at 1440px viewport. Auto-discovers subpages.
+- `AGENTS.md` — The complete step-by-step playbook.
+- `CLAUDE.md` — Mirrors `AGENTS.md` for use as Claude Code project instructions.
 
-## Website-to-Styleguide Process
+## Quick Start
 
-The repository includes a systematic approach for extracting design tokens, components, and patterns from websites. See [AGENTS.md](AGENTS.md) for the complete step-by-step playbook.
+Using Claude Code (Opus 4.6 or greater), ask it to create a new idea:
 
-### Quick Start
-
-Using any AI coding assistant (recommend Claude Code with Opus 4.6 or greater), ask it to create a new idea:
 ```
-Create a new idea using https://lunatemplate.framer.website/
+Create a new idea using https://example.com
 ```
 
-## App — Local Development
+Claude will follow the playbook in `AGENTS.md` end-to-end: capturing screenshots, extracting tokens, and producing a self-contained `styleguide.html`.
 
-The app lives in `apps/web` (Vite + React frontend) and `apps/api` (Bun + Hono backend with Playwright).
-
-### Prerequisites
-
-- [Bun](https://bun.sh) — `curl -fsSL https://bun.sh/install | bash`
-- Playwright's Chromium browser — run once after installing deps:
-  ```bash
-  cd apps/api && bunx playwright install chromium
-  ```
-
-### Install dependencies
+## Scripts
 
 ```bash
-bun run install:all
+# Capture full-page screenshots for a site
+node scripts/capture-screenshots.mjs <URL> ideas/idea{#}
 ```
-
-### Run both servers together
-
-```bash
-bun run dev
-```
-
-This starts:
-- API at `http://localhost:3000` (Bun + Hono)
-- Web at `http://localhost:5173` (Vite)
-
-The Vite dev server proxies all `/api/*` requests to `http://localhost:3000` automatically — no extra config needed.
-
-### Run individually
-
-```bash
-bun run dev:api   # API only
-bun run dev:web   # Frontend only
-```
-
-### Test the extraction
-
-With both servers running, open `http://localhost:5173`, paste any URL, and click Extract. Or hit the API directly:
-
-```bash
-curl "http://localhost:3000/api/extract?url=https://stripe.com"
-```
-
-You'll see the SSE stream in the terminal. The final `complete` event contains a `jobId` — open `http://localhost:3000/api/jobs/<jobId>/styleguide` to view the result.
-
-## License
-
-This is a personal project for learning and experimentation.

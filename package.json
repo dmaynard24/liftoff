@@ -1,15 +1,10 @@
 {
   "name": "liftoff",
   "private": true,
-  "workspaces": ["apps/web", "apps/api"],
   "scripts": {
-    "dev": "concurrently \"bun run dev:api\" \"bun run dev:web\"",
-    "dev:api": "cd apps/api && bun run dev",
-    "dev:web": "cd apps/web && bun run dev",
-    "build": "cd apps/web && bun run build",
-    "install:all": "bun install && cd apps/api && bun install"
+    "screenshots": "node scripts/capture-screenshots.mjs"
   },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
+  "dependencies": {
+    "playwright": "^1.40.0"
   }
 }
